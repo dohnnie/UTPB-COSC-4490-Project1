@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class Bird
+public class Bird extends Collideable implements Runnable, Transformable
 {
     Game game;
     Toolkit tk;

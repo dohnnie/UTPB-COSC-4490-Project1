@@ -1,9 +1,9 @@
 import java.util.Arraylist;
 
-public class Collideable implements {
+public class Collideable implements Runnable{
 
     private ArrayList<CollisionBody> body = new ArrayList<>();
-    private ArrayList<CollisionBody> colliders = new ArrayList<>();
+    private ArrayList<Collideable> colliders = new ArrayList<>();
 
     public Collideable() {
 
@@ -26,5 +26,16 @@ public class Collideable implements {
         colliders.remove(c);
     }
 
-    public
+    public boolean collide() {
+        for (Collideable c : colliders) {
+            for (CollisionBody b1 : body) {
+                for (CollisionBody b2: c.body) {
+                    if (b1.collide(b2)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
 }
