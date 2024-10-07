@@ -1,3 +1,5 @@
+package src;
+
 import javax.imageio.ImageIO;
 import javax.sound.sampled.*;
 import java.awt.*;
@@ -7,7 +9,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class Bird extends Collideable implements Runnable, Transformable
+public class Bird
 {
     Game game;
     Toolkit tk;
