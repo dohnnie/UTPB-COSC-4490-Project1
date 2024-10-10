@@ -21,7 +21,7 @@ public class Game implements Runnable
     public double waitTime = 1000.0 / rateTarget;
     public double rate = 1000 / waitTime;
 
-    public Bird bird;
+    Player player;
     public int mouseX;
     public int mouseY;
     public int fireRate = 10;
@@ -85,7 +85,7 @@ public class Game implements Runnable
                 }
             }
 
-            bird = new Bird(this, tk);
+            player = new Player(this, tk);
 
             BufferedImage image = ImageIO.read(new File("pipe.png"));
 
@@ -146,8 +146,10 @@ public class Game implements Runnable
             {
                 if(e.getKeyCode() == KeyEvent.VK_SPACE)
                 {
-                    if (running)
-                        bird.flap();
+                    if (running) {
+                        //bird.flap();
+                        player.jump();
+                    }
                 }
                 if(e.getKeyCode() == KeyEvent.VK_ESCAPE)
                 {
@@ -312,7 +314,7 @@ public class Game implements Runnable
                         clouds[i].update();
                 }
 
-                bird.update();
+                //bird.update();
                 for (int i = 0; i < pipes.length; i++) {
                     if (pipes[i] == null)
                         continue;
@@ -368,9 +370,9 @@ public class Game implements Runnable
                             pipeCount = 0;
                     }
 
-                    if (bird.collide(pipes[i])) {
+                    /*if (bird.collide(pipes[i])) {
                         running = !running;
-                    }
+                    }*/
                 }
             }
 
@@ -402,7 +404,7 @@ public class Game implements Runnable
             }
         }
 
-        bird.reset();
+        //bird.reset();
         pipes = new Pipe[5];
         Pipe p = new Pipe(this, tk, tk.getScreenSize().height / 2, pipeWidth, pipeHeight);
         pipes[0] = p;

@@ -46,7 +46,7 @@ public class GameCanvas extends JPanel implements Runnable
                     game.clouds[i].drawCloud(g2d);
             }
 
-            game.bird.drawBird(g2d);
+            game.player.drawPlayer(g2d);
 
             g2d.setColor(Color.RED);
             g2d.drawOval(game.mouseX - crosshairSize, game.mouseY - crosshairSize, crosshairSize*2, crosshairSize*2);
