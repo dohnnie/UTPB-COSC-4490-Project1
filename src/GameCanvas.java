@@ -47,17 +47,18 @@ public class GameCanvas extends JPanel implements Runnable
             }
 
             game.player.drawPlayer(g2d);
+            game.ground.drawPlatform(g2d);
 
             g2d.setColor(Color.RED);
             g2d.drawOval(game.mouseX - crosshairSize, game.mouseY - crosshairSize, crosshairSize*2, crosshairSize*2);
             g2d.drawLine(game.mouseX - crosshairSize, game.mouseY, game.mouseX+crosshairSize, game.mouseY);
             g2d.drawLine(game.mouseX, game.mouseY-crosshairSize, game.mouseX, game.mouseY+crosshairSize);
 
-            for (int i = 0; i < game.pipes.length; i++)
+            /*for (int i = 0; i < game.pipes.length; i++)
             {
                 if (game.pipes[i] != null)
                     game.pipes[i].drawPipe(g2d);
-            }
+            }*/
 
             g2d.setColor(Color.BLACK);
             if (game.running) {

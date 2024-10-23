@@ -22,12 +22,15 @@ public class Game implements Runnable
     public double rate = 1000 / waitTime;
 
     Player player;
+    double pMaxSpeed = 10;
+    double pAcceleration = 1;
     public int mouseX;
     public int mouseY;
     public int fireRate = 10;
     public int fireCounter = 0;
     public boolean firing = false;
 
+    Platform ground = new Platform(0,1000,1500,100);
     public Pipe[] pipes = new Pipe[5];
     private int pipeCount = 1;
 
@@ -136,6 +139,7 @@ public class Game implements Runnable
 
         frame.addKeyListener(new KeyListener()
         {
+            int currentSpeed = 1;
             @Override
             public void keyTyped(KeyEvent e)
             {
@@ -149,6 +153,7 @@ public class Game implements Runnable
                     if (running) {
                         //bird.flap();
                         player.jump();
+                        System.out.println("Jump!");
                     }
                 }
                 if(e.getKeyCode() == KeyEvent.VK_ESCAPE)
@@ -213,6 +218,28 @@ public class Game implements Runnable
                             ramping = !ramping;
                         if (canvas.cursor == 6)
                             debug = !debug;
+                    }
+                }
+                if(e.getKeyCode() == KeyEvent.VK_W) {
+
+                }
+                if(e.getKeyCode() == KeyEvent.VK_A) {
+                    if(-currentSpeed > -pMaxSpeed) {
+                        player.move(-currentSpeed);
+                        currentSpeed += pAcceleration;
+                    } else {
+                        player.move(-pMaxSpeed);
+                    }
+                }
+                if(e.getKeyCode() == KeyEvent.VK_S) {
+
+                }
+                if(e.getKeyCode() == KeyEvent.VK_D) {
+                    if(currentSpeed < pMaxSpeed) {
+                        player.move(currentSpeed);
+                        currentSpeed += pAcceleration;
+                    } else {
+                        player.move(pMaxSpeed);
                     }
                 }
             }
@@ -315,7 +342,10 @@ public class Game implements Runnable
                 }
 
                 //bird.update();
-                for (int i = 0; i < pipes.length; i++) {
+                boolean collision = player.collide(ground);
+                System.out.println(collision);
+                player.update(collision);   
+                /*for (int i = 0; i < pipes.length; i++) {
                     if (pipes[i] == null)
                         continue;
 
@@ -370,10 +400,10 @@ public class Game implements Runnable
                             pipeCount = 0;
                     }
 
-                    /*if (bird.collide(pipes[i])) {
+                    if (bird.collide(pipes[i])) {
                         running = !running;
-                    }*/
-                }
+                    }
+                }*/
             }
 
             long sleep = (long) waitTime - (System.nanoTime() - startTime) / 1000000;
