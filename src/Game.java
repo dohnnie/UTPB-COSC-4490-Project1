@@ -342,9 +342,7 @@ public class Game implements Runnable
                 }
 
                 //bird.update();
-                boolean collision = player.collide(ground);
-                System.out.println(collision);
-                player.update(collision);   
+                player.update(player.collide(ground));   
                 /*for (int i = 0; i < pipes.length; i++) {
                     if (pipes[i] == null)
                         continue;
@@ -414,6 +412,16 @@ public class Game implements Runnable
                 Thread.sleep(Math.max(sleep, 0));
             } catch (InterruptedException ex)
             {
+            }
+            // System.out.println("Canvas Width: " + canvas.width + " Canvas Height: " + canvas.height);
+            if(player.worldBounds(canvas.width, canvas.height)) {
+                //running = !running;
+                try {
+                    Thread.sleep(2000);
+                    System.exit(0);
+                } catch(Exception e) {
+
+                }
             }
         }
     }

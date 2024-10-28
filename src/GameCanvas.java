@@ -17,6 +17,8 @@ public class GameCanvas extends JPanel implements Runnable
 
     public int cursor = 0;
     public int crosshairSize = 30;
+    
+    int width, height;
 
     public GameCanvas(Game game, Graphics g, Toolkit tk)
     {
@@ -31,8 +33,8 @@ public class GameCanvas extends JPanel implements Runnable
         {
             long startTime = System.nanoTime();
 
-            int width = tk.getScreenSize().width;
-            int height = tk.getScreenSize().height;
+            width = tk.getScreenSize().width;
+            height = tk.getScreenSize().height;
 
             BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2d = image.createGraphics();

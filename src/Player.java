@@ -70,8 +70,9 @@ public class Player {
     }
 
     public boolean worldBounds(double screenWidth, double screenHeight) {
-        if( ((bLeft[0] >= screenWidth || bLeft[0] < 0) && (bLeft[1] >= screenHeight || bLeft[1] < 0)) ) {
-
+        if(tLeft[0] >= screenWidth || tLeft[1] >= screenHeight) {
+            System.out.println("Out of bounds");
+            return true;
         }
 
         return false;
