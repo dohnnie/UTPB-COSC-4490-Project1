@@ -6,6 +6,10 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 import javax.swing.*;
+
+import GameObjects.*;
+import Collision.*;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.AffineTransform;
@@ -24,6 +28,8 @@ public class Game implements Runnable
     Player player;
     double pMaxSpeed = 10;
     double pAcceleration = 1;
+    int pWidth = 70;
+    int pHeight = 150;
     public int mouseX;
     public int mouseY;
     public int fireRate = 10;
@@ -88,7 +94,7 @@ public class Game implements Runnable
                 }
             }
 
-            player = new Player(this, tk);
+            player = new Player(this, tk, pWidth, pHeight);
 
             BufferedImage image = ImageIO.read(new File("pipe.png"));
 
@@ -341,8 +347,7 @@ public class Game implements Runnable
                         clouds[i].update();
                 }
 
-                //bird.update();
-                player.update(player.collide(ground));   
+                player.update(player.collider.collide((BoxCollider)ground.collider));   
                 /*for (int i = 0; i < pipes.length; i++) {
                     if (pipes[i] == null)
                         continue;
