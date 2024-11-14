@@ -48,7 +48,7 @@ public class PhysicsObject {
     }
 
     public void update(boolean isColliding) {
-        yVel -= 10;
+        yVel -= 0.1;
         tLeft.y -=yVel;        
     }
 }

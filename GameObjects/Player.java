@@ -21,7 +21,6 @@ public class Player extends PhysicsObject{
     double xVel = 0.0;
     double yAcc = 0.1;
     double yVel = 0.0;
-    Point rootPoint;
 
     BufferedImage playerImage;
 
@@ -35,26 +34,25 @@ public class Player extends PhysicsObject{
         this.game = g;
         this.tk = tk;
 
-        rootPoint = new Point(this.tLeft.x, this.tLeft.y);
         playerImage = ImageIO.read(new File("Figure.png"));
         Graphics x = playerImage.getGraphics();
         x.drawImage(playerImage, 0, 0, null);
     }
 
     public void drawPlayer(Graphics g) {
-        g.drawImage(playerImage, rootPoint.x, rootPoint.y, null);
+        g.drawImage(playerImage, this.tLeft.x, this.tLeft.y, null);
 
         g.setColor(Color.red);
-        g.drawRect(rootPoint.x, rootPoint.y, this.width, this.height);
+        g.drawRect(this.tLeft.x, this.tLeft.y, this.width, this.height);
     }
 
     public void move(double acceleration) {
         xVel = acceleration;
-        rootPoint.x += xVel;
+        this.tLeft.x += xVel;
     }
 
     public void jump() {
-        rootPoint.y -= 15;
+        this.tLeft.y -= 15;
     }
 
    /*public boolean collide(Platform platform) {
@@ -67,16 +65,11 @@ public class Player extends PhysicsObject{
     }*/
 
     public boolean worldBounds(double screenWidth, double screenHeight) {
-        if(rootPoint.x >= screenWidth || rootPoint.y >= screenHeight) {
+        if(this.tLeft.x >= screenWidth || this.tLeft.y >= screenHeight) {
             System.out.println("Out of bounds");
             return true;
         }
 
         return false;
     }
-
-    /*public void update(boolean isColliding) {
-    
-    }*/
-
 }
