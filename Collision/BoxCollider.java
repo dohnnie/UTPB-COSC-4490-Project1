@@ -4,9 +4,17 @@ import java.awt.Point;
 
 public class BoxCollider extends Collider {
     Point tLeft, tRight, bLeft, bRight;
-
-    public BoxCollider(int x, int y) {
+    int width, height;
+    public BoxCollider(int x, int y, int width, int height) {
         super(x, y);
+        this.width = width;
+        this.height = height;
+        //Since swing starts drawing from the top left of the image it'll be easier to make that the root point
+        //and doing math to find stuff like the middle of the collider
+        tLeft = new Point(this.xPos, this.yPos);
+        tRight = new Point(this.xPos + width, this.yPos);
+        bLeft = new Point(this.xPos, this.yPos + height);
+        bRight = new Point(this.xPos + width, this.yPos + height);
     }
 
     // General use case for collisions between a box, and a physics box

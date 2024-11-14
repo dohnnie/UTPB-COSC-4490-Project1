@@ -1,28 +1,32 @@
 package GameObjects;
 
 import Collision.*;
-
+import java.awt.Point;
 public class PhysicsObject {
     
-    int xPos, yPos;
-    int width, height;
-    double xVel, yVel;
-    double acceleration;
-    double gravity;
+    public int width, height;
+    public double xVel, yVel;
+    public double acceleration;
+    public double gravity;
     public Collider collider;
+    public Point tLeft, tRight, bLeft, bRight;
 
     public PhysicsObject(int xPos, int yPos, int width, int height, CollisionType cType) {
-        this.xPos = xPos;
-        this.yPos = yPos;
+        //Root point
+        tLeft = new Point(xPos, yPos);
+        tRight = new Point(xPos + width, yPos);
+        bLeft = new Point(xPos, yPos + height);
+        bRight = new Point(xPos + width, yPos + height);
         this.width = width;
         this.height = height;
         switch (cType) {
             case BOX:
-                collider = new BoxCollider(this.xPos, this.yPos); 
+                collider = new BoxCollider(tLeft.x, tLeft.y, width, height); 
                 collider = (BoxCollider)collider;
                 break;
             case CIRCLE:
-                collider = new CircleCollider(this.xPos, this.yPos);
+                //Remember to change this to the center of the circle rather than top left of a box
+                collider = new CircleCollider(tLeft.x, tLeft.y);
                 collider = (CircleCollider)collider;
                 break;
         }
@@ -36,7 +40,15 @@ public class PhysicsObject {
 
     }
 
-    public void update() {
-        
+    public void updatePoints(int xPos, int yPos) {
+        tLeft.x = xPos; tLeft.y = yPos;
+        tRight.x = xPos + this.width; tRight.y = yPos;
+        bLeft.x = xPos; bLeft.y = yPos + height;
+        bRight.x = xPos + width; bRight.y = yPos + height;
+    }
+
+    public void update(boolean isColliding) {
+        yVel -= 10;
+        tLeft.y -=yVel;        
     }
 }

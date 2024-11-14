@@ -157,9 +157,7 @@ public class Game implements Runnable
                 if(e.getKeyCode() == KeyEvent.VK_SPACE)
                 {
                     if (running) {
-                        //bird.flap();
                         player.jump();
-                        System.out.println("Jump!");
                     }
                 }
                 if(e.getKeyCode() == KeyEvent.VK_ESCAPE)
@@ -347,7 +345,7 @@ public class Game implements Runnable
                         clouds[i].update();
                 }
 
-                player.update(player.collider.collide((BoxCollider)ground.collider));   
+                player.update(player.collider.collide( (BoxCollider) ground.collider));   
                 /*for (int i = 0; i < pipes.length; i++) {
                     if (pipes[i] == null)
                         continue;

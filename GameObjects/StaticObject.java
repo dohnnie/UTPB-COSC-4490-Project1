@@ -15,7 +15,7 @@ public class StaticObject {
         this.height = height;
         switch (cType) {
             case BOX:
-                collider = new BoxCollider(this.xPos, this.yPos);
+                collider = new BoxCollider(this.xPos, this.yPos, width, height);
                 break;
             case CIRCLE:
                 collider = new CircleCollider(this.xPos, this.yPos);
