@@ -1,21 +1,14 @@
 package src;
 
-import javax.imageio.ImageIO;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.FloatControl;
-import javax.swing.*;
-
 import GameObjects.*;
-import Collision.*;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import javax.imageio.ImageIO;
+import javax.swing.*;
 
 public class Game implements Runnable
 {
@@ -345,7 +338,7 @@ public class Game implements Runnable
                         clouds[i].update();
                 }
 
-                player.update(player.collider.collide( (BoxCollider) ground.collider));   
+                player.update(player.box.collide(ground));   
                 /*for (int i = 0; i < pipes.length; i++) {
                     if (pipes[i] == null)
                         continue;

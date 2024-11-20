@@ -1,6 +1,7 @@
 // Collision interface that should force every collision class to implement a collide method
 package Collision;
 
+import GameObjects.*;
 public class Collider {
     int xPos, yPos;
 
@@ -12,13 +13,9 @@ public class Collider {
     public Collider(int x, int y) {
         this.xPos = x;
         this.yPos = y;
-   }
+    }
 
-   public boolean collide(BoxCollider obj) {
-    return true;
-   }
-
-   public boolean collide(CircleCollider obj) {
-    return true;
-   }
+    public boolean collide(Platform platform) {
+        return true;
+    }
 }

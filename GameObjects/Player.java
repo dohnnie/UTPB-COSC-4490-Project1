@@ -1,26 +1,17 @@
 package GameObjects;
 
-import java.awt.Toolkit;
-import java.io.IOException;
-
 import Collision.*;
-import src.Game;
-import java.awt.image.*;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Point;
+import java.awt.Toolkit;
+import java.awt.image.*;
 import java.io.*;
 import javax.imageio.ImageIO;
+import src.Game;
 
 public class Player extends PhysicsObject{
     Game game;
     Toolkit tk;
-    //int zLayer;
-
-
-    double xVel = 0.0;
-    double yAcc = 0.1;
-    double yVel = 0.0;
 
     BufferedImage playerImage;
 
@@ -52,7 +43,8 @@ public class Player extends PhysicsObject{
     }
 
     public void jump() {
-        this.tLeft.y -= 15;
+        this.yVel -= 10;
+        this.tLeft.y += this.yVel;
     }
 
    /*public boolean collide(Platform platform) {

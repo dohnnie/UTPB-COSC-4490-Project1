@@ -7,28 +7,31 @@ public class PhysicsObject {
     public int width, height;
     public double xVel, yVel;
     public double acceleration;
-    public double gravity;
-    public Collider collider;
-    public Point tLeft, tRight, bLeft, bRight;
+    public static double gravity = 0.1f;
+    public Point tLeft, tRight, bLeft, bRight, root;
+    public BoxCollider box;
+    public CircleCollider circle;
 
     public PhysicsObject(int xPos, int yPos, int width, int height, CollisionType cType) {
-        //Root point
+        
         tLeft = new Point(xPos, yPos);
+        //Root point
+        root = tLeft;
         tRight = new Point(xPos + width, yPos);
         bLeft = new Point(xPos, yPos + height);
         bRight = new Point(xPos + width, yPos + height);
         this.width = width;
         this.height = height;
+        this.xVel = 0;
+        this.yVel = 0;
         switch (cType) {
-            case BOX:
-                collider = new BoxCollider(tLeft.x, tLeft.y, width, height); 
-                collider = (BoxCollider)collider;
-                break;
-            case CIRCLE:
+            case BOX -> {
+                box = new BoxCollider(tLeft.x, tLeft.y, width, height); 
+            }
+            case CIRCLE -> {
                 //Remember to change this to the center of the circle rather than top left of a box
-                collider = new CircleCollider(tLeft.x, tLeft.y);
-                collider = (CircleCollider)collider;
-                break;
+                circle = new CircleCollider(tLeft.x, tLeft.y);
+            }
         }
     }
 
@@ -41,14 +44,26 @@ public class PhysicsObject {
     }
 
     public void updatePoints(int xPos, int yPos) {
-        tLeft.x = xPos; tLeft.y = yPos;
-        tRight.x = xPos + this.width; tRight.y = yPos;
-        bLeft.x = xPos; bLeft.y = yPos + height;
-        bRight.x = xPos + width; bRight.y = yPos + height;
+        box.tLeft.x = xPos;
+        box.tLeft.y = yPos;
+        box.tRight.x = xPos + this.width; 
+        box.tRight.y = yPos;
+        box.bLeft.x = xPos; 
+        box.bLeft.y = yPos + height;
+        box.bRight.x = xPos + width; 
+        box.bRight.y = yPos + height;
     }
 
     public void update(boolean isColliding) {
-        yVel -= 0.1;
-        tLeft.y -=yVel;        
+        updatePoints(this.tLeft.x, this.tLeft.y);
+        if(isColliding) {
+            System.out.println("Collide!");
+            yVel = 0.0f;
+        }
+        else {
+            yVel += gravity;
+        }
+        //yVel += gravity;
+        root.y += yVel;
     }
 }
