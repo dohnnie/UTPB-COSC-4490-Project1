@@ -1,8 +1,8 @@
 package src;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import javax.swing.*;
 
 public class GameCanvas extends JPanel implements Runnable
 {
@@ -48,8 +48,9 @@ public class GameCanvas extends JPanel implements Runnable
                     game.clouds[i].drawCloud(g2d);
             }
 
-            game.player.drawPlayer(g2d);
             game.ground.drawPlatform(g2d);
+            game.player.drawPlayer(g2d);
+            game.enemy1.drawEnemy(g2d);
 
             g2d.setColor(Color.RED);
             g2d.drawOval(game.mouseX - crosshairSize, game.mouseY - crosshairSize, crosshairSize*2, crosshairSize*2);

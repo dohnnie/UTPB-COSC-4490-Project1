@@ -26,6 +26,17 @@ public class BoxCollider extends Collider {
         return height;
     }
 
+    public void updatePoints(int xPos, int yPos) {
+        tLeft.x = xPos;
+        tLeft.y = yPos;
+        tRight.x = xPos + width; 
+        tRight.y = yPos;
+        bLeft.x = xPos; 
+        bLeft.y = yPos + height;
+        bRight.x = xPos + width; 
+        bRight.y = yPos + height;
+    }
+
     // General use case for collisions between a box, and a physics box
     @Override
     public boolean collide(Platform platform) {

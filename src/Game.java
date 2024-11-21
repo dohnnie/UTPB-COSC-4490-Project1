@@ -1,5 +1,6 @@
 package src;
 
+import Collision.CollisionType;
 import GameObjects.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -32,6 +33,8 @@ public class Game implements Runnable
     Platform ground = new Platform(0,1000,1500,100);
     public Pipe[] pipes = new Pipe[5];
     private int pipeCount = 1;
+
+    BasicEnemy enemy1;
 
     public int highScore = 0;
     public int score = 0;
@@ -88,6 +91,7 @@ public class Game implements Runnable
             }
 
             player = new Player(this, tk, pWidth, pHeight);
+            enemy1 = new BasicEnemy(0, 0, 100, 100);
 
             BufferedImage image = ImageIO.read(new File("pipe.png"));
 
@@ -338,7 +342,8 @@ public class Game implements Runnable
                         clouds[i].update();
                 }
 
-                player.update(player.box.collide(ground));   
+                player.update(ground);
+                enemy1.update(ground);   
                 /*for (int i = 0; i < pipes.length; i++) {
                     if (pipes[i] == null)
                         continue;

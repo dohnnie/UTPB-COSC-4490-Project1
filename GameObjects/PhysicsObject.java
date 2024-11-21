@@ -43,27 +43,17 @@ public class PhysicsObject {
 
     }
 
-    public void updatePoints(int xPos, int yPos) {
-        box.tLeft.x = xPos;
-        box.tLeft.y = yPos;
-        box.tRight.x = xPos + this.width; 
-        box.tRight.y = yPos;
-        box.bLeft.x = xPos; 
-        box.bLeft.y = yPos + height;
-        box.bRight.x = xPos + width; 
-        box.bRight.y = yPos + height;
-    }
-
-    public void update(boolean isColliding) {
-        updatePoints(this.tLeft.x, this.tLeft.y);
+    public void update(Platform platform) {
+        box.updatePoints(this.tLeft.x, this.tLeft.y);
+        boolean isColliding = this.box.collide(platform);
         if(isColliding) {
-            System.out.println("Collide!");
+            box.bLeft.y -= platform.box.tLeft.y;
+            box.bRight.y -= platform.box.tLeft.y;
             yVel = 0.0f;
         }
         else {
             yVel += gravity;
         }
-        //yVel += gravity;
         root.y += yVel;
     }
 }

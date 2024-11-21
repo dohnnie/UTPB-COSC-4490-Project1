@@ -47,15 +47,6 @@ public class Player extends PhysicsObject{
         this.tLeft.y += this.yVel;
     }
 
-   /*public boolean collide(Platform platform) {
-        //Case 1: player.bRight is past platform.tLeft, and Case 2: player.bLeft is past platform.tRight
-        if((bRight[0] >= platform.tLeft[0] && bRight[1] >= platform.tLeft[1]) && (bLeft[0] <= platform.tRight[0] && bLeft[1] >= platform.tRight[1])) {
-                return true;
-        }
-        
-        return false;
-    }*/
-
     public boolean worldBounds(double screenWidth, double screenHeight) {
         if(this.tLeft.x >= screenWidth || this.tLeft.y >= screenHeight) {
             System.out.println("Out of bounds");
