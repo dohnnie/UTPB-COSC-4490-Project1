@@ -1,6 +1,5 @@
 package src;
 
-import Collision.CollisionType;
 import GameObjects.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -91,7 +90,7 @@ public class Game implements Runnable
             }
 
             player = new Player(this, tk, pWidth, pHeight);
-            enemy1 = new BasicEnemy(0, 0, 100, 100);
+            enemy1 = new BasicEnemy(10, 0, 100, 100, player);
 
             BufferedImage image = ImageIO.read(new File("pipe.png"));
 
