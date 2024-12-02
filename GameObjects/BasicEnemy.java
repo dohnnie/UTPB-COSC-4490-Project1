@@ -30,25 +30,22 @@ public class BasicEnemy extends PhysicsObject{
             case PATROL -> {
                 int max_range = patrolPoint + range;
                 int min_range = patrolPoint - range;
-                System.out.println("Patrol");
                 switch(direction) {
                     case LEFT -> {
-                        System.out.println("Left!");
                         //When the npc reaches the right most of the patrol and must turn left
                         if(this.xVel > 0)
                             this.xVel = 0;
 
-                        this.xVel += 1;
+                        this.xVel -= 0.1;
                         if(this.tLeft.x <= min_range)
                             direction = StatesAI.RIGHT;
                     }
                     case RIGHT -> {
-                        System.out.println("Right!");
                         //When the npc reaches the left most part of the patrol and must turn right
                         if(this.xVel < 0)
                             this.xVel = 0;
 
-                        this.xVel -= 1;
+                        this.xVel += 0.1;
                         if(this.tLeft.x >= max_range)
                             direction = StatesAI.LEFT;
                     }
