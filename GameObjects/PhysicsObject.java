@@ -8,12 +8,12 @@ public class PhysicsObject {
     public double xVel, yVel;
     public double acceleration;
     public static double gravity = 0.1f;
-    public Point tLeft, tRight, bLeft, bRight, root;
+    public Point tLeft, tRight, bLeft, bRight, root, initPoint;
     public BoxCollider box;
     public CircleCollider circle;
 
     public PhysicsObject(int xPos, int yPos, int width, int height, CollisionType cType) {
-        
+        initPoint = new Point(xPos, yPos);
         tLeft = new Point(xPos, yPos);
         //Root point
         root = tLeft;
@@ -33,6 +33,13 @@ public class PhysicsObject {
                 circle = new CircleCollider(tLeft.x, tLeft.y);
             }
         }
+    }
+
+    public void reset() {
+        xVel = 0;
+        yVel = 0;
+        tLeft.x = initPoint.x;
+        tLeft.y = initPoint.y;
     }
 
     public void calculate_velocity(double acceleration) {

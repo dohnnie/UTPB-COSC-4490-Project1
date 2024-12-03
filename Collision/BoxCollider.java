@@ -36,6 +36,8 @@ public class BoxCollider extends Collider {
         bLeft.y = yPos + height;
         bRight.x = xPos + width; 
         bRight.y = yPos + height;
+        center.x = xPos + (width / 2);
+        center.y = yPos + (height / 2);
     }
 
     // General use case for collisions between a box, and a physics box

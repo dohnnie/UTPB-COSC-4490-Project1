@@ -1,7 +1,6 @@
 package GameObjects;
 
 import Collision.*;
-
 import java.awt.*;
 import java.awt.image.*;
 import java.io.*;

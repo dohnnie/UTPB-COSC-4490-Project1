@@ -90,7 +90,7 @@ public class Game implements Runnable
             }
 
             player = new Player(this, tk, pWidth, pHeight);
-            enemy1 = new BasicEnemy(10, 0, 100, 100, player);
+            enemy1 = new BasicEnemy(30, 900, 100, 100, player);
 
             BufferedImage image = ImageIO.read(new File("pipe.png"));
 
@@ -428,7 +428,7 @@ public class Game implements Runnable
 
     public void reset()
     {
-        if (score > highScore)
+        /*if (score > highScore)
         {
             highScore = score;
             running = true;
@@ -451,6 +451,9 @@ public class Game implements Runnable
 
         clouds = new Cloud[cloudCap];
         cloudCount = 0;
+        */
+        player.reset();
+        enemy1.reset();
 
         running = true;
     }
