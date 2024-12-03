@@ -1,9 +1,8 @@
 package GameObjects;
 
 import Collision.*;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Toolkit;
+
+import java.awt.*;
 import java.awt.image.*;
 import java.io.*;
 import javax.imageio.ImageIO;
@@ -25,9 +24,12 @@ public class Player extends PhysicsObject{
         this.game = g;
         this.tk = tk;
 
-        playerImage = ImageIO.read(new File("Figure.png"));
+        playerImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics x = playerImage.getGraphics();
-        x.drawImage(playerImage, 0, 0, null);
+        BufferedImage rawImage = ImageIO.read(new File("Figure.png"));
+        Image tempImage = rawImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        x.drawImage(tempImage, 0, 0, null);
+        x.dispose();
     }
 
     public void drawPlayer(Graphics g) {
