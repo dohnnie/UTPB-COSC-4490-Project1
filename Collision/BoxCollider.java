@@ -4,7 +4,7 @@ import GameObjects.*;
 import java.awt.Point;
 
 public class BoxCollider extends Collider {
-    public Point tLeft, tRight, bLeft, bRight;
+    public Point tLeft, tRight, bLeft, bRight, center;
     int width, height;
     public BoxCollider(int x, int y, int width, int height) {
         super(x, y);
@@ -16,6 +16,7 @@ public class BoxCollider extends Collider {
         tRight = new Point(this.xPos + width, this.yPos);
         bLeft = new Point(this.xPos, this.yPos + height);
         bRight = new Point(this.xPos + width, this.yPos + height);
+        center = new Point(x + (width / 2), y + (height / 2));
     }
 
     public int getWidth() {

@@ -9,7 +9,7 @@ public class BasicEnemy extends PhysicsObject{
     Player player;
     int patrolPoint;
     int range = 10;
-    int radius = 10;
+    int radius = 30;
 
     public BasicEnemy(int x, int y, int width, int height, Player player) {
         super(x, y, width, height, CollisionType.BOX);
@@ -22,6 +22,20 @@ public class BasicEnemy extends PhysicsObject{
     public void drawEnemy(Graphics g) {
         g.setColor(Color.green);
         g.fillRect(this.tLeft.x, this.tLeft.y, this.width, this.height);
+    }
+
+    public boolean checkRadius(Player player) {
+        System.out.println("Checking radius");
+        int x_dist = Math.abs(player.box.center.x - this.box.center.x);
+        int y_dist = Math.abs(player.box.center.y - this.box.center.y);
+        double distance = Math.sqrt( (x_dist * x_dist) + (y_dist + y_dist));
+
+        if(Math.abs(distance - radius) <= radius) {
+            System.out.println("In radius");
+            return true;
+        }
+        
+        return false;
     }
 
     @Override
@@ -51,7 +65,7 @@ public class BasicEnemy extends PhysicsObject{
                             direction = StatesAI.LEFT;
                     }
                 }
-                if(this.tLeft.x <= player.tLeft.x)
+                if(checkRadius(player))
                     state = StatesAI.CHASE;
 
                 this.tLeft.x += this.xVel; 
@@ -74,9 +88,7 @@ public class BasicEnemy extends PhysicsObject{
         }
         //if player jumps on top of enemy
         if(this.box.collideTop(player)){
-            System.out.println("Collision Top!");
             state = StatesAI.DEAD;
         }
-        System.out.println("End of update");
     }
 }
