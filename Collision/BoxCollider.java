@@ -45,7 +45,9 @@ public class BoxCollider extends Collider {
     public boolean collide(Platform platform) {
         //Currently all if statements are broken, I have to perform a check for each corner rathaer than just 2 in order to get the full range
         // Case 1: When right side of object is colliding on top of the left side of this
-        if((this.bRight.x >= platform.box.tLeft.x && this.bRight.y >= platform.box.tLeft.y) && (this.bLeft.x <=platform.box.tRight.x && this.bLeft.y >= platform.box.tRight.y))    
+        if((this.bRight.x >= platform.box.tLeft.x && this.bRight.y >= platform.box.tLeft.y) && 
+            (this.bLeft.x <=platform.box.tRight.x && this.bLeft.y >= platform.box.tRight.y) &&
+            (this.tLeft.y <= platform.box.tLeft.y && this.tRight.y <= platform.box.tRight.y))    
             return true;
         // Case 2: When left side of object is colliding on top of the right side of this 
         //else if(this.bLeft.x <=platform.box.tRight.x && this.bLeft.y >= platform.box.tRight.y)
@@ -56,14 +58,6 @@ public class BoxCollider extends Collider {
         // Case 4: When left side of object is colliding under the right side of this
         //else if(this.tLeft.x >= platform.box.bRight.x && this.tLeft.y >= platform.box.bLeft.y)
         //    return true;
-
-        return false;
-    }
-
-    public boolean collideTop(Player player) {
-        if(player.box.bLeft.x >= this.tLeft.x && player.box.bLeft.y >= this.tLeft.y && 
-            player.box.bRight.x <= this.tRight.x && player.box.bRight.y >= this.tRight.y)
-            return true;
 
         return false;
     }

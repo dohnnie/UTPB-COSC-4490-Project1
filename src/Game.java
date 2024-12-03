@@ -90,7 +90,7 @@ public class Game implements Runnable
             }
 
             player = new Player(this, tk, pWidth, pHeight);
-            enemy1 = new BasicEnemy(30, 900, 100, 100, player);
+            enemy1 = new BasicEnemy(30, 900, 100, 100, player, this);
 
             BufferedImage image = ImageIO.read(new File("pipe.png"));
 

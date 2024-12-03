@@ -4,17 +4,20 @@ import Collision.*;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
+import src.*;
 public class BasicEnemy extends PhysicsObject{
    
     StatesAI state, direction;
     Player player;
+    Game game;
     int patrolPoint;
     double max_vel = 1.5;
     int range = 100;
     int radius = 200;
 
-    public BasicEnemy(int x, int y, int width, int height, Player player) {
+    public BasicEnemy(int x, int y, int width, int height, Player player, Game game) {
         super(x, y, width, height, CollisionType.BOX);
+        this.game = game;
         initPoint = new Point(x, y);
         this.player = player;
         patrolPoint = x;
@@ -47,6 +50,20 @@ public class BasicEnemy extends PhysicsObject{
     //Limits the max speed that an enemy can travel
     public double velocity(double currentSpeed) {
         return currentSpeed > 0 ? Math.min(currentSpeed, max_vel) : Math.max(currentSpeed, -max_vel);
+    }
+
+    public boolean collideTop(Player player) {
+        if(player.box.bLeft.x >= this.box.tLeft.x && player.box.bLeft.y == this.box.tLeft.y && 
+            player.box.bRight.x <= this.box.tRight.x && player.box.bRight.y == this.box.tRight.y)
+            return true;
+
+        return false;
+    }
+
+    @Override
+    public void reset() {
+        super.reset();
+        state = StatesAI.PATROL;
     }
 
     @Override
@@ -109,8 +126,12 @@ public class BasicEnemy extends PhysicsObject{
             }
         }
         //if player jumps on top of enemy
-        if(this.box.collideTop(player)){
+        if(this.collideTop(player)){
             state = StatesAI.DEAD;
+        }
+        else if(player.collide(this) && !this.collideTop(player)) {
+            game.running = false;
+            System.out.println("You lose!");
         }
     }
 }

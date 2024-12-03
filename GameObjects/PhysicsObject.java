@@ -53,6 +53,7 @@ public class PhysicsObject {
     public void update(Platform platform) {
         box.updatePoints(this.tLeft.x, this.tLeft.y);
         boolean isColliding = this.box.collide(platform);
+        //FIX SETTING INCORRECT Y COORDINATES
         if(isColliding) {
             box.bLeft.y -= platform.box.tLeft.y;
             box.bRight.y -= platform.box.tLeft.y;
