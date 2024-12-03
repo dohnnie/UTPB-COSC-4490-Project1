@@ -4,7 +4,7 @@ import GameObjects.*;
 import java.awt.Point;
 
 public class BoxCollider extends Collider {
-    public Point tLeft, tRight, bLeft, bRight;
+    public Point tLeft, tRight, bLeft, bRight, center;
     int width, height;
     public BoxCollider(int x, int y, int width, int height) {
         super(x, y);
@@ -16,6 +16,7 @@ public class BoxCollider extends Collider {
         tRight = new Point(this.xPos + width, this.yPos);
         bLeft = new Point(this.xPos, this.yPos + height);
         bRight = new Point(this.xPos + width, this.yPos + height);
+        center = new Point(x + (width / 2), y + (height / 2));
     }
 
     public int getWidth() {
@@ -53,6 +54,14 @@ public class BoxCollider extends Collider {
         // Case 4: When left side of object is colliding under the right side of this
         //else if(this.tLeft.x >= platform.box.bRight.x && this.tLeft.y >= platform.box.bLeft.y)
         //    return true;
+
+        return false;
+    }
+
+    public boolean collideTop(Player player) {
+        if(player.box.bLeft.x >= this.tLeft.x && player.box.bLeft.y >= this.tLeft.y && 
+            player.box.bRight.x <= this.tRight.x && player.box.bRight.y >= this.tRight.y)
+            return true;
 
         return false;
     }
