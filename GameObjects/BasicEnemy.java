@@ -9,6 +9,7 @@ public class BasicEnemy extends PhysicsObject{
     Player player;
     int patrolPoint;
     int range = 10;
+    int radius = 10;
 
     public BasicEnemy(int x, int y, int width, int height, Player player) {
         super(x, y, width, height, CollisionType.BOX);
@@ -32,7 +33,7 @@ public class BasicEnemy extends PhysicsObject{
                 int min_range = patrolPoint - range;
                 switch(direction) {
                     case LEFT -> {
-                        //When the npc reaches the right most of the patrol and must turn left
+                        //When the enemy reaches the right most of the patrol and must turn left
                         if(this.xVel > 0)
                             this.xVel = 0;
 
@@ -41,7 +42,7 @@ public class BasicEnemy extends PhysicsObject{
                             direction = StatesAI.RIGHT;
                     }
                     case RIGHT -> {
-                        //When the npc reaches the left most part of the patrol and must turn right
+                        //When the enemy reaches the left most part of the patrol and must turn right
                         if(this.xVel < 0)
                             this.xVel = 0;
 
@@ -50,15 +51,32 @@ public class BasicEnemy extends PhysicsObject{
                             direction = StatesAI.LEFT;
                     }
                 }
-                this.tLeft.x += this.xVel;
-            }
-            case CHASE -> {
-                System.out.println("Chase");
+                if(this.tLeft.x <= player.tLeft.x)
+                    state = StatesAI.CHASE;
 
+                this.tLeft.x += this.xVel; 
+            } 
+            case CHASE -> {
+                int targetPos = player.tLeft.x;
+                if(targetPos - this.tLeft.x >= 0)
+                    this.xVel += 0.1;
+                else if(targetPos - this.tLeft.x <= 0)
+                    this.xVel -= 0.1;
+
+                this.tLeft.x += this.xVel;
+
+                if(player.tLeft.x >= radius)
+                    state = StatesAI.PATROL;
             }
             case DEAD -> {
-                System.out.println("Dead");
+                    System.out.println("DEAD");
             }
         }
+        //if player jumps on top of enemy
+        if(this.box.collideTop(player)){
+            System.out.println("Collision Top!");
+            state = StatesAI.DEAD;
+        }
+        System.out.println("End of update");
     }
 }

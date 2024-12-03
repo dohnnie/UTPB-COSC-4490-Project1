@@ -56,4 +56,12 @@ public class BoxCollider extends Collider {
 
         return false;
     }
+
+    public boolean collideTop(Player player) {
+        if(player.box.bLeft.x >= this.tLeft.x && player.box.bLeft.y >= this.tLeft.y && 
+            player.box.bRight.x <= this.tRight.x && player.box.bRight.y >= this.tRight.y)
+            return true;
+
+        return false;
+    }
 }
