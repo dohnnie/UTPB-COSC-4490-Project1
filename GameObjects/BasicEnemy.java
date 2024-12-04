@@ -7,7 +7,7 @@ import java.awt.Point;
 import src.*;
 public class BasicEnemy extends PhysicsObject{
    
-    StatesAI state, direction;
+    public StatesAI state, direction;
     Player player;
     Game game;
     int patrolPoint;
@@ -25,9 +25,9 @@ public class BasicEnemy extends PhysicsObject{
         direction = StatesAI.RIGHT;
     }
 
-    public void drawEnemy(Graphics g) {
+    public void drawEnemy(Graphics g, Color color) {
         if(this.state != StatesAI.DEAD) {
-            g.setColor(Color.green);
+            g.setColor(color);
             g.fillRect(this.tLeft.x, this.tLeft.y, this.width, this.height); 
         }
         else if(this.state == StatesAI.DEAD) {
@@ -52,13 +52,13 @@ public class BasicEnemy extends PhysicsObject{
         return currentSpeed > 0 ? Math.min(currentSpeed, max_vel) : Math.max(currentSpeed, -max_vel);
     }
 
-    public boolean collideTop(Player player) {
+    /*public boolean collideTop(Player player) {
         if(player.box.bLeft.x >= this.box.tLeft.x && player.box.bLeft.y == this.box.tLeft.y && 
             player.box.bRight.x <= this.box.tRight.x && player.box.bRight.y == this.box.tRight.y)
             return true;
 
         return false;
-    }
+    }*/
 
     @Override
     public void reset() {
@@ -126,12 +126,12 @@ public class BasicEnemy extends PhysicsObject{
             }
         }
         //if player jumps on top of enemy
-        if(this.collideTop(player)){
+        /*if(this.collideTop(player)){
             state = StatesAI.DEAD;
         }
         else if(player.collide(this) && !this.collideTop(player)) {
             game.running = false;
             System.out.println("You lose!");
-        }
+        }*/
     }
 }

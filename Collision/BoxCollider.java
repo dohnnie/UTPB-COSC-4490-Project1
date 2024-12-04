@@ -1,6 +1,5 @@
 package Collision;
 
-import GameObjects.*;
 import java.awt.Point;
 
 public class BoxCollider extends Collider {
@@ -27,7 +26,7 @@ public class BoxCollider extends Collider {
         return height;
     }
 
-    public void updatePoints(int xPos, int yPos) {
+    public void updateColliderPoints(int xPos, int yPos) {
         tLeft.x = xPos;
         tLeft.y = yPos;
         tRight.x = xPos + width; 
@@ -41,24 +40,41 @@ public class BoxCollider extends Collider {
     }
 
     // General use case for collisions between a box, and a physics box
-    @Override
-    public boolean collide(Platform platform) {
-        //Currently all if statements are broken, I have to perform a check for each corner rathaer than just 2 in order to get the full range
-        // Case 1: When right side of object is colliding on top of the left side of this
-        if((this.bRight.x >= platform.box.tLeft.x && this.bRight.y >= platform.box.tLeft.y) && 
-            (this.bLeft.x <=platform.box.tRight.x && this.bLeft.y >= platform.box.tRight.y) &&
-            (this.tLeft.y <= platform.box.tLeft.y && this.tRight.y <= platform.box.tRight.y))    
-            return true;
-        // Case 2: When left side of object is colliding on top of the right side of this 
-        //else if(this.bLeft.x <=platform.box.tRight.x && this.bLeft.y >= platform.box.tRight.y)
-        //    return true;
-        // Case 3: When right side of object is colliding under the left side of this
-        //else if(this.tRight.x <= platform.box.bLeft.x && this.tRight.y >= platform.box.bLeft.y)
-        //    return true;
-        // Case 4: When left side of object is colliding under the right side of this
-        //else if(this.tLeft.x >= platform.box.bRight.x && this.tLeft.y >= platform.box.bLeft.y)
-        //    return true;
+    public BoxSides collide(BoxCollider obj) {
 
-        return false;
+        //System.out.println("This tLeft: " + tLeft.x + ", This tRight: " + tRight.x + ", This bLeft: " + bLeft.y + ", This bRight: " + bRight.y);
+        //System.out.println("Obj tLeft: " + obj.tLeft.x + ", Obj tRight: " + obj.tRight.x + ", Obj bLeft: " + obj.bLeft.y + ", Obj bRight: " + obj.bRight.y);
+
+        if(this.tRight.x < obj.tLeft.x || obj.tRight.x < this.tLeft.x)
+            return BoxSides.NONE;
+        
+        if(this.bRight.y < obj.bLeft.y || obj.bRight.y < this.bLeft.y)
+            return BoxSides.NONE;
+
+        //Checks if this is to the left or right ob obj
+        if(this.tRight.x > obj.tLeft.x || this.tLeft.x < obj.tRight.x) {
+            //Checks if this is within the height of obj
+            if(this.bRight.y > obj.bLeft.y && this.bLeft.y < obj.bRight.y) {
+                //if this is to the right of obj
+                if(this.tRight.x > obj.tLeft.x)
+                    return BoxSides.RIGHT;
+
+                return BoxSides.LEFT;
+            }
+        }
+
+        //Checks if this is above or below obj
+        if(this.bRight.y > obj.bLeft.y || this.bLeft.y < obj.bRight.y) {
+            //Checks if this is within the width of obj
+            if(this.tRight.x > obj.tLeft.x && this.tLeft.x < obj.tRight.x) {
+                //if this is below obj
+                if(this.bRight.y > obj.bLeft.y)
+                    return BoxSides.BOTTOM;
+
+                return BoxSides.TOP;
+            }
+        }
+
+        return BoxSides.NONE;
     }
 }

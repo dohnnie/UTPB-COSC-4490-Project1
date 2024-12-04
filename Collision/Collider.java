@@ -14,8 +14,4 @@ public class Collider {
         this.xPos = x;
         this.yPos = y;
     }
-
-    public boolean collide(Platform platform) {
-        return true;
-    }
 }

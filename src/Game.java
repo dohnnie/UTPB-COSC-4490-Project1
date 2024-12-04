@@ -29,7 +29,7 @@ public class Game implements Runnable
     public int fireCounter = 0;
     public boolean firing = false;
 
-    Platform ground = new Platform(0,1000,1500,100);
+    Platform ground = new Platform(200,1000,1400,100);
     public Pipe[] pipes = new Pipe[5];
     private int pipeCount = 1;
 
@@ -90,7 +90,7 @@ public class Game implements Runnable
             }
 
             player = new Player(this, tk, pWidth, pHeight);
-            enemy1 = new BasicEnemy(30, 900, 100, 100, player, this);
+            enemy1 = new BasicEnemy(300, 700, 100, 100, player, this);
 
             BufferedImage image = ImageIO.read(new File("pipe.png"));
 

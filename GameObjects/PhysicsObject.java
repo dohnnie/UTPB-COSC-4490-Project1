@@ -50,17 +50,42 @@ public class PhysicsObject {
 
     }
 
+    public void updateObjectPoints(BoxCollider box) {
+        this.tLeft.x = box.tLeft.x;
+        this.tLeft.y = box.tLeft.y;
+        this.tRight.x = box.tRight.x;
+        this.tRight.y = box.tRight.y;
+        this.bLeft.x = box.bLeft.x;
+        this.bLeft.y = box.bLeft.y;
+        this.bRight.x = box.bRight.x;
+        this.bRight.y = box.bRight.y;
+    }
+
     public void update(Platform platform) {
-        box.updatePoints(this.tLeft.x, this.tLeft.y);
-        boolean isColliding = this.box.collide(platform);
-        //FIX SETTING INCORRECT Y COORDINATES
-        if(isColliding) {
-            box.bLeft.y -= platform.box.tLeft.y;
-            box.bRight.y -= platform.box.tLeft.y;
-            yVel = 0.0f;
-        }
-        else {
-            yVel += gravity;
+        box.updateColliderPoints(tLeft.x, tLeft.y);
+        BoxSides collisionSide = box.collide(platform.box);
+        switch(collisionSide) {
+            case TOP -> {
+                int left_offset = box.bLeft.y - platform.box.tLeft.y;
+                int right_offset = box.bRight.y - platform.box.tLeft.y;
+                box.tLeft.y -= left_offset;
+                box.tRight.y -= right_offset;
+                box.bLeft.y -= left_offset;
+                box.bRight.y -= right_offset;
+                yVel = 0.0f;
+            }
+            case LEFT -> {
+
+            }
+            case RIGHT -> {
+
+            }
+            case BOTTOM -> {
+
+            }
+            case NONE -> {
+                yVel += gravity;
+            }
         }
         root.y += yVel;
     }

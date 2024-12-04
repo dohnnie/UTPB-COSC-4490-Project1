@@ -50,7 +50,11 @@ public class GameCanvas extends JPanel implements Runnable
 
             game.ground.drawPlatform(g2d);
             game.player.drawPlayer(g2d);
-            game.enemy1.drawEnemy(g2d);
+            game.enemy1.drawEnemy(g2d, Color.green);
+            /*if(game.enemy1.state != StatesAI.CHASE)
+                game.enemy1.drawEnemy(g2d, Color.green);
+            else
+                game.enemy1.drawEnemy(g2d, Color.red);*/
 
             g2d.setColor(Color.RED);
             g2d.drawOval(game.mouseX - crosshairSize, game.mouseY - crosshairSize, crosshairSize*2, crosshairSize*2);
