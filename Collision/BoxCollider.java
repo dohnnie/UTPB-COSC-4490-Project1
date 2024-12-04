@@ -41,15 +41,12 @@ public class BoxCollider extends Collider {
 
     // General use case for collisions between a box, and a physics box
     public BoxSides collide(BoxCollider obj) {
-
-        //System.out.println("This tLeft: " + tLeft.x + ", This tRight: " + tRight.x + ", This bLeft: " + bLeft.y + ", This bRight: " + bRight.y);
-        //System.out.println("Obj tLeft: " + obj.tLeft.x + ", Obj tRight: " + obj.tRight.x + ", Obj bLeft: " + obj.bLeft.y + ", Obj bRight: " + obj.bRight.y);
-
         if(this.tRight.x < obj.tLeft.x || obj.tRight.x < this.tLeft.x)
             return BoxSides.NONE;
         
-        if(this.bRight.y < obj.bLeft.y || obj.bRight.y < this.bLeft.y)
+        if(this.bRight.y < obj.tLeft.y || obj.bRight.y < this.tLeft.y) {
             return BoxSides.NONE;
+        }
 
         //Checks if this is to the left or right ob obj
         if(this.tRight.x > obj.tLeft.x || this.tLeft.x < obj.tRight.x) {
@@ -77,4 +74,24 @@ public class BoxCollider extends Collider {
 
         return BoxSides.NONE;
     }
+
+    /*public BoxSides collideTest(BoxCollider obj) {
+        if(this.tRight.x < obj.tLeft.x || obj.tRight.x < this.tLeft.x)
+            return BoxSides.NONE;
+        
+        if(this.bRight.y < obj.bLeft.y || this.tLeft.x < obj.tRight.x)
+            return BoxSides.NONE;
+
+        return BoxSides.TOP;
+    }
+
+    public boolean collideTest2(BoxCollider obj) {
+        if(this.tRight.x < obj.tLeft.x || obj.tRight.x < this.tLeft.x)
+            return false;
+        
+        if(this.bRight.y < obj.tRight.y || this.bLeft.x < obj.tLeft.x)
+            return false;
+
+        return true;
+    }*/
 }
