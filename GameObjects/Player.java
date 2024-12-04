@@ -57,7 +57,7 @@ public class Player extends PhysicsObject{
         return false;
     }
 
-    public boolean collide(BasicEnemy enemy) {
+    /*public boolean collide(BasicEnemy enemy) {
         BoxCollider eHitbox = enemy.box;
         if((this.box.tLeft.x <= eHitbox.tRight.x && this.box.bLeft.x <= eHitbox.bRight.x) &&
             (this.box.bLeft.y <= eHitbox.bRight.y && this.box.bLeft.y >= eHitbox.tRight.y)) {
@@ -66,5 +66,5 @@ public class Player extends PhysicsObject{
             }
 
         return false;
-    }
+    }*/
 }

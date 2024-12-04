@@ -64,6 +64,11 @@ public class PhysicsObject {
     public void update(Platform platform) {
         box.updateColliderPoints(tLeft.x, tLeft.y);
         BoxSides collisionSide = box.collide(platform.box);
+        if(this.getClass() == Player.class ) {
+            System.out.println("Player tLeft: " + this.tLeft.x + ", Player tRight: " + this.tRight.x + ", Player bLeft: " + this.bLeft.y + ", Player bRight: " + this.bRight.y);
+            System.out.println("Plat tLeft: " + platform.box.tLeft.x + ", Plat tRight: " + platform.box.tRight.x + ", Plat bLeft: " + platform.box.bLeft.y + ", Plat bRight: " + platform.box.bRight.y);
+            System.out.println(collisionSide);
+        }
         switch(collisionSide) {
             case TOP -> {
                 int left_offset = box.bLeft.y - platform.box.tLeft.y;
