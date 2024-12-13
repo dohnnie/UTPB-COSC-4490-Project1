@@ -43,8 +43,8 @@ public class Pipe
     public void drawPipe(Graphics g)
     {
         Graphics2D g2d = (Graphics2D) g;
-        g2d.drawImage(game.pipeImage, xPos, yPos, null);
-        g2d.drawImage(game.flippedPipe, xPos, yPos - gap - height, null);
+        //g2d.drawImage(game.pipeImage, xPos, yPos, null);
+        //g2d.drawImage(game.flippedPipe, xPos, yPos - gap - height, null);
     }
 
     public boolean update()

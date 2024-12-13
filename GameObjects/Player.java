@@ -10,15 +10,15 @@ import src.Game;
 public class Player extends PhysicsObject{
     Game game;
     Toolkit tk;
+    public BoxSides direction;
+    int init_jump_count = 2; 
+    public int jumps = init_jump_count;
+    double pMaxYSpeed = -2;
 
     BufferedImage playerImage;
 
-    public Player(Game g, Toolkit tk, int width, int height) throws IOException {
-        super((int)(tk.getScreenSize().getWidth() / 2) - (width / 2),
-                (int)(tk.getScreenSize().getHeight() / 2) - (height / 2),
-                width,
-                height,
-                CollisionType.BOX);
+    public Player(Game g, Toolkit tk, int size, int xPos, int yPos) throws IOException {
+        super(xPos, yPos,size, size, CollisionType.BOX);
 
         this.game = g;
         this.tk = tk;
@@ -32,24 +32,33 @@ public class Player extends PhysicsObject{
     }
 
     public void drawPlayer(Graphics g) {
-        g.drawImage(playerImage, this.tLeft.x, this.tLeft.y, null);
+        g.drawImage(playerImage, this.box.tLeft.x, this.box.tLeft.y, null);
 
         g.setColor(Color.red);
-        g.drawRect(this.tLeft.x, this.tLeft.y, this.width, this.height);
+        g.drawRect(this.box.tLeft.x, this.box.tLeft.y, this.width, this.height);
     }
 
-    public void move(double acceleration) {
-        xVel = acceleration;
-        this.tLeft.x += xVel;
+    public void move() {
+        root.x += xVel;
     }
 
     public void jump() {
-        this.yVel -= 10;
-        this.tLeft.y += this.yVel;
+        if(jumps > 0) {
+            yVel -= 10;
+            root.y += yVel;
+            jumps--;
+        }
+    }
+
+    @Override
+    public void update(BoxCollider obj) {
+        super.update(obj);
+        if(this.cDirection == BoxSides.TOP)
+            jumps = init_jump_count;
     }
 
     public boolean worldBounds(double screenWidth, double screenHeight) {
-        if(this.tLeft.x >= screenWidth || this.tLeft.y >= screenHeight) {
+        if(this.box.tLeft.x >= screenWidth || this.box.tLeft.y >= screenHeight) {
             System.out.println("Out of bounds");
             return true;
         }

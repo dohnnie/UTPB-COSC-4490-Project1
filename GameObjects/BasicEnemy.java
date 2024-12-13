@@ -28,7 +28,7 @@ public class BasicEnemy extends PhysicsObject{
     public void drawEnemy(Graphics g, Color color) {
         if(this.state != StatesAI.DEAD) {
             g.setColor(color);
-            g.fillRect(this.tLeft.x, this.tLeft.y, this.width, this.height); 
+            g.fillRect(this.box.tLeft.x, this.box.tLeft.y, this.width, this.height); 
         }
         else if(this.state == StatesAI.DEAD) {
             
@@ -52,14 +52,6 @@ public class BasicEnemy extends PhysicsObject{
         return currentSpeed > 0 ? Math.min(currentSpeed, max_vel) : Math.max(currentSpeed, -max_vel);
     }
 
-    /*public boolean collideTop(Player player) {
-        if(player.box.bLeft.x >= this.box.tLeft.x && player.box.bLeft.y == this.box.tLeft.y && 
-            player.box.bRight.x <= this.box.tRight.x && player.box.bRight.y == this.box.tRight.y)
-            return true;
-
-        return false;
-    }*/
-
     @Override
     public void reset() {
         super.reset();
@@ -67,8 +59,8 @@ public class BasicEnemy extends PhysicsObject{
     }
 
     @Override
-    public void update(Platform platform) {
-        super.update(platform);
+    public void update(BoxCollider toCollide) {
+        super.update(toCollide);
         switch(state) {
             case PATROL -> {
                 int max_range = patrolPoint + range;
@@ -80,7 +72,7 @@ public class BasicEnemy extends PhysicsObject{
                             this.xVel = 0;
 
                         this.xVel -= 0.1;
-                        if(this.tLeft.x <= min_range)
+                        if(this.box.tLeft.x <= min_range)
                             direction = StatesAI.RIGHT;
                     }
                     case RIGHT -> {
@@ -89,14 +81,14 @@ public class BasicEnemy extends PhysicsObject{
                             this.xVel = 0;
 
                         this.xVel += 0.1;
-                        if(this.tLeft.x >= max_range)
+                        if(this.box.tLeft.x >= max_range)
                             direction = StatesAI.LEFT;
                     }
                 }
                 if(checkRadius(player))
                     state = StatesAI.CHASE;
 
-                this.tLeft.x += this.velocity(this.xVel);
+                this.box.tLeft.x += this.velocity(this.xVel);
             } 
             case CHASE -> {
                 int targetPos = player.box.center.x;
@@ -115,7 +107,7 @@ public class BasicEnemy extends PhysicsObject{
                     this.xVel -= 0.1;
                 }
 
-                this.tLeft.x += this.velocity(this.xVel); 
+                this.box.tLeft.x += this.velocity(this.xVel); 
 
                 if(player.box.center.x >= this.box.center.x + radius) {
                     state = StatesAI.PATROL;
@@ -125,13 +117,9 @@ public class BasicEnemy extends PhysicsObject{
 
             }
         }
-        //if player jumps on top of enemy
-        /*if(this.collideTop(player)){
-            state = StatesAI.DEAD;
-        }
-        else if(player.collide(this) && !this.collideTop(player)) {
-            game.running = false;
+        if (player.box.collide(this.box) != BoxSides.NONE){
             System.out.println("You lose!");
-        }*/
+            game.running = false;
+        }
     }
 }

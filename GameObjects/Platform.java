@@ -1,8 +1,8 @@
 package GameObjects;
 
-import java.awt.Graphics;
 import Collision.*;
 import java.awt.Color;
+import java.awt.Graphics;
 
 public class Platform extends StaticObject{
 

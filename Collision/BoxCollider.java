@@ -48,50 +48,28 @@ public class BoxCollider extends Collider {
             return BoxSides.NONE;
         }
 
-        //Checks if this is to the left or right ob obj
-        if(this.tRight.x > obj.tLeft.x || this.tLeft.x < obj.tRight.x) {
-            //Checks if this is within the height of obj
-            if(this.bRight.y > obj.bLeft.y && this.bLeft.y < obj.bRight.y) {
-                //if this is to the right of obj
-                if(this.tRight.x > obj.tLeft.x)
-                    return BoxSides.RIGHT;
-
+        double xDist = this.center.x - obj.center.x;
+        double yDist = obj.center.y - this.center.y;
+        double dist = Math.sqrt((xDist * xDist) + (yDist * yDist));
+        double theta = Math.acos((xDist / yDist) / dist);
+        int angle = (int)((theta * 8)/(Math.PI * 2));
+        
+        switch (angle) {
+            case 0, 7 -> { 
                 return BoxSides.LEFT;
             }
-        }
-
-        //Checks if this is above or below obj
-        if(this.bRight.y > obj.bLeft.y || this.bLeft.y < obj.bRight.y) {
-            //Checks if this is within the width of obj
-            if(this.tRight.x > obj.tLeft.x && this.tLeft.x < obj.tRight.x) {
-                //if this is below obj
-                if(this.bRight.y > obj.bLeft.y)
-                    return BoxSides.BOTTOM;
-
+            case 1, 2 -> {
                 return BoxSides.TOP;
             }
+            case 3, 4 -> {
+                return BoxSides.RIGHT;
+            }
+            case 5, 6 -> {
+                return BoxSides.BOTTOM;
+            }
+            default -> {
+                return BoxSides.NONE;
+            }
         }
-
-        return BoxSides.NONE;
     }
-
-    /*public BoxSides collideTest(BoxCollider obj) {
-        if(this.tRight.x < obj.tLeft.x || obj.tRight.x < this.tLeft.x)
-            return BoxSides.NONE;
-        
-        if(this.bRight.y < obj.bLeft.y || this.tLeft.x < obj.tRight.x)
-            return BoxSides.NONE;
-
-        return BoxSides.TOP;
-    }
-
-    public boolean collideTest2(BoxCollider obj) {
-        if(this.tRight.x < obj.tLeft.x || obj.tRight.x < this.tLeft.x)
-            return false;
-        
-        if(this.bRight.y < obj.tRight.y || this.bLeft.x < obj.tLeft.x)
-            return false;
-
-        return true;
-    }*/
 }

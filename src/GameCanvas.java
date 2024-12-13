@@ -1,5 +1,6 @@
 package src;
 
+import GameObjects.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import javax.swing.*;
@@ -9,7 +10,6 @@ public class GameCanvas extends JPanel implements Runnable
 
     private Game game;
     private Graphics graphics;
-    Toolkit tk;
 
     private final double rateTarget = 60.0;
     private double waitTime = 1000.0 / rateTarget;
@@ -17,6 +17,10 @@ public class GameCanvas extends JPanel implements Runnable
 
     public int cursor = 0;
     public int crosshairSize = 30;
+    public int[][] tile_grid;
+
+    //This will eventually change based on file size
+    public int mapWidth, mapHeight;
     
     int width, height;
 
@@ -24,7 +28,23 @@ public class GameCanvas extends JPanel implements Runnable
     {
         this.game = game;
         graphics = g;
-        this.tk = tk;
+    }
+
+    public void setup() {
+        mapWidth = game.tk.getScreenSize().width / game.sprite_size;
+        mapHeight = game.tk.getScreenSize().height / game.sprite_size;
+        tile_grid = new int[mapHeight][mapWidth];
+
+        System.out.println("Map Dimensions: " + mapHeight + " x " + mapWidth);
+
+        //game.fill_tile(tile_grid, game.platforms, game.enemies);
+        game.test_tile_grid(tile_grid);
+        for(int row = 0; row < mapHeight; row++) {
+            for(int col = 0; col < mapWidth; col++) {
+                System.out.print(tile_grid[row][col]);
+            }
+            System.out.println();
+        }
     }
 
     @Override
@@ -33,8 +53,8 @@ public class GameCanvas extends JPanel implements Runnable
         {
             long startTime = System.nanoTime();
 
-            width = tk.getScreenSize().width;
-            height = tk.getScreenSize().height;
+            width = game.tk.getScreenSize().width;
+            height = game.tk.getScreenSize().height;
 
             BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2d = image.createGraphics();
@@ -42,15 +62,17 @@ public class GameCanvas extends JPanel implements Runnable
             g2d.setColor(Color.CYAN);
             g2d.fillRect(0, 0, width, height);
 
-            for (int i = 0; i < game.clouds.length; i++)
+            /*for (int i = 0; i < game.clouds.length; i++)
             {
                 if (game.clouds[i] != null && !game.clouds[i].passed)
                     game.clouds[i].drawCloud(g2d);
-            }
+            }*/
 
-            game.ground.drawPlatform(g2d);
+            for(Platform platform : game.platforms) {
+                platform.drawPlatform(g2d);
+            }
             game.player.drawPlayer(g2d);
-            game.enemy1.drawEnemy(g2d, Color.green);
+            //game.enemy1.drawEnemy(g2d, Color.green);
             /*if(game.enemy1.state != StatesAI.CHASE)
                 game.enemy1.drawEnemy(g2d, Color.green);
             else
@@ -69,8 +91,8 @@ public class GameCanvas extends JPanel implements Runnable
 
             g2d.setColor(Color.BLACK);
             if (game.running) {
-                g2d.drawString(String.format("Score: %d", game.score), 25, 25);
-                g2d.drawString(String.format("High Score: %d", game.highScore), 25, 50);
+                //g2d.drawString(String.format("Score: %d", game.score), 25, 25);
+                //g2d.drawString(String.format("High Score: %d", game.highScore), 25, 50);
             } else {
                 g2d.drawString(String.format("%s Reset Game", cursor == 0 ? ">" : " "), 25, 25);
                 g2d.drawString(String.format("%s Exit Game", cursor == 1 ? ">" : " "), 25, 50);

@@ -1,13 +1,11 @@
 package src;
 
 import GameObjects.*;
+import Level_Editor.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
-import java.awt.image.BufferedImage;
-import java.io.*;
-import javax.imageio.ImageIO;
+import java.io.IOException;
+import java.util.ArrayList;
 import javax.swing.*;
 
 public class Game implements Runnable
@@ -18,25 +16,31 @@ public class Game implements Runnable
     public double waitTime = 1000.0 / rateTarget;
     public double rate = 1000 / waitTime;
 
+    public int sprite_size = 200;
+
     Player player;
-    double pMaxSpeed = 10;
-    double pAcceleration = 1;
-    int pWidth = 70;
-    int pHeight = 150;
+    public double pMaxSpeed = 5;
+    double pAcceleration = 0.1;
+    boolean goRight = false;
+    boolean goLeft = false;
+
     public int mouseX;
     public int mouseY;
     public int fireRate = 10;
     public int fireCounter = 0;
     public boolean firing = false;
 
-    Platform ground = new Platform(200,1000,1400,100);
-    public Pipe[] pipes = new Pipe[5];
-    private int pipeCount = 1;
+    //Using normal arrays for testing tile size, after testing fully implement Arraylist of platforms
+    //Platform ground = new Platform(200,1000, sprite_size, sprite_size);
+    /*public Pipe[] pipes = new Pipe[5];
+    private int pipeCount = 1;*/
+    ArrayList<Platform> platforms = new ArrayList<>();
+    ArrayList<BasicEnemy> enemies = new ArrayList<>();
 
-    BasicEnemy enemy1;
 
-    public int highScore = 0;
-    public int score = 0;
+
+    /*public int highScore = 0;
+    public int score = 0;*/
 
     public Toolkit tk;
     public boolean debug = false;
@@ -46,16 +50,16 @@ public class Game implements Runnable
     public double difficulty = 0.0;
     public boolean ramping = false;
 
-    private int pipeWidth;
+    /*private int pipeWidth;
     private int pipeHeight;
     public BufferedImage pipeImage;
-    public BufferedImage flippedPipe;
+    public BufferedImage flippedPipe;*/
 
-    public BufferedImage[] cloudImage = new BufferedImage[21];
+    /*public BufferedImage[] cloudImage = new BufferedImage[21];
     private final int cloudCap = 20;
     public Cloud[] clouds = new Cloud[cloudCap];
     private int cloudCount = 0;
-    private final double cloudRate = 0.005;
+    private final double cloudRate = 0.005;*/
 
     public Game()
     {
@@ -72,8 +76,9 @@ public class Game implements Runnable
         frame.setVisible(true);
         frame.requestFocus();
 
+
         try {
-            File scoreFile = new File("score.txt");
+            /*File scoreFile = new File("score.txt");
             if(!scoreFile.exists())
             {
                 highScore = 0;
@@ -87,37 +92,38 @@ public class Game implements Runnable
                 } catch (Exception ex) {
                     highScore = 0;
                 }
-            }
+            }*/
 
-            player = new Player(this, tk, pWidth, pHeight);
-            enemy1 = new BasicEnemy(300, 700, 100, 100, player, this);
+            //player = new Player(this, tk, sprite_size, sprite_size);
+            //enemy1 = new BasicEnemy(300, 700, sprite_size, sprite_size, player, this);
 
-            BufferedImage image = ImageIO.read(new File("pipe.png"));
+            /*BufferedImage image = ImageIO.read(new File("pipe.png"));
 
             pipeWidth = tk.getScreenSize().width / 16;
-            pipeHeight = (int)(((double)pipeWidth / (double)image.getWidth()) * image.getHeight());
+            pipeHeight = (int)(((double)pipeWidth / (double)image.getWidth()) * image.getHeight());*/
 
-            Image temp = image.getScaledInstance(pipeWidth, pipeHeight, BufferedImage.SCALE_SMOOTH);
+            /*Image temp = image.getScaledInstance(pipeWidth, pipeHeight, BufferedImage.SCALE_SMOOTH);
             pipeImage = new BufferedImage(pipeWidth, pipeHeight, BufferedImage.TYPE_INT_ARGB);
             Graphics g = pipeImage.getGraphics();
             g.drawImage(temp, 0, 0, null);
             g.dispose();
+            */
 
-            AffineTransform at = new AffineTransform();
+            /*AffineTransform at = new AffineTransform();
             at.rotate(Math.PI, image.getWidth() / 2, image.getHeight() / 2);
             AffineTransformOp ato = new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
-            BufferedImage flipped = ato.filter(image, null);
+            BufferedImage flipped = ato.filter(image, null);*/
 
-            temp = flipped.getScaledInstance(pipeWidth, pipeHeight, BufferedImage.SCALE_SMOOTH);
+            /*temp = flipped.getScaledInstance(pipeWidth, pipeHeight, BufferedImage.SCALE_SMOOTH);
             flippedPipe = new BufferedImage(pipeWidth, pipeHeight, BufferedImage.TYPE_INT_ARGB);
             g = flippedPipe.getGraphics();
             g.drawImage(temp, 0, 0, null);
-            g.dispose();
+            g.dispose();*/
 
-            Pipe pipe = new Pipe(this, tk, tk.getScreenSize().height / 2, pipeWidth, pipeHeight);
-            pipes[0] = pipe;
+            /*Pipe pipe = new Pipe(this, tk, tk.getScreenSize().height / 2, pipeWidth, pipeHeight);
+            pipes[0] = pipe;*/
 
-            image = ImageIO.read(new File("clouds.png"));
+            /*image = ImageIO.read(new File("clouds.png"));
             int fragHeight = image.getHeight() / 21;
             for (int i = 0; i < cloudImage.length; i++)
             {
@@ -126,7 +132,7 @@ public class Game implements Runnable
                 g = cloudImage[i].getGraphics();
                 g.drawImage(temp, 0, 0, null);
                 g.dispose();
-            }
+            }  */
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -134,17 +140,25 @@ public class Game implements Runnable
         }
 
         canvas = new GameCanvas(this, frame.getGraphics(), tk);
+        canvas.setup();
         frame.add(canvas);
+
+        try {
+            create_level(canvas.tile_grid);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(0);
+        }
 
         Thread drawLoop = new Thread(canvas);
         drawLoop.start();
 
         frame.addKeyListener(new KeyListener()
         {
-            int currentSpeed = 1;
             @Override
             public void keyTyped(KeyEvent e)
             {
+
             }
 
             @Override
@@ -224,29 +238,28 @@ public class Game implements Runnable
 
                 }
                 if(e.getKeyCode() == KeyEvent.VK_A) {
-                    if(-currentSpeed > -pMaxSpeed) {
-                        player.move(-currentSpeed);
-                        currentSpeed += pAcceleration;
-                    } else {
-                        player.move(-pMaxSpeed);
-                    }
+                    goLeft = true;
                 }
                 if(e.getKeyCode() == KeyEvent.VK_S) {
 
                 }
                 if(e.getKeyCode() == KeyEvent.VK_D) {
-                    if(currentSpeed < pMaxSpeed) {
-                        player.move(currentSpeed);
-                        currentSpeed += pAcceleration;
-                    } else {
-                        player.move(pMaxSpeed);
-                    }
+                    goRight = true;
                 }
             }
 
             @Override
             public void keyReleased(KeyEvent e)
             {
+                if(e.getKeyCode() == KeyEvent.VK_A) {
+                    player.xVel = 0;
+                    goLeft = false;
+                }
+
+                if(e.getKeyCode() == KeyEvent.VK_D) {
+                    player.xVel = 0;
+                    goRight = false;
+                }
             }
         });
 
@@ -324,7 +337,7 @@ public class Game implements Runnable
                 //   if collide():
                 //     do something
 
-                if (Math.random() < cloudRate)
+                /*if (Math.random() < cloudRate)
                 {
                     cloudCount++;
                     if (cloudCount >= clouds.length)
@@ -340,9 +353,24 @@ public class Game implements Runnable
                     if(clouds[i] != null)
                         clouds[i].update();
                 }
+                */
 
-                player.update(ground);
-                enemy1.update(ground);   
+                if(goLeft) {
+                    System.out.println("Player xVel: " + player.xVel);
+                    player.xVel -= pAcceleration;
+                    player.xVel = Math.max(player.xVel, -pMaxSpeed);
+                    player.move();
+                }
+                
+                if(goRight) {
+                    System.out.println("Player xVel: " + player.xVel);
+                    player.xVel += pAcceleration;
+                    player.xVel = Math.min(player.xVel, pMaxSpeed);
+                    player.move();
+                }
+
+                //player.update(ground.box);
+                //enemy1.update(ground.box);   
                 /*for (int i = 0; i < pipes.length; i++) {
                     if (pipes[i] == null)
                         continue;
@@ -453,9 +481,57 @@ public class Game implements Runnable
         cloudCount = 0;
         */
         player.reset();
-        enemy1.reset();
+        //enemy1.reset();
 
         running = true;
+    }
+
+    public void fill_tile(int[][] tile_grid, Platform[] platforms, BasicEnemy[] enemies) {
+        
+        for(int row = 0; row < canvas.mapWidth; row++) {
+            tile_grid[row][canvas.mapHeight - 1] = 1;
+        }
+    }
+
+    public void test_tile_grid(int[][] tile_grid) {
+        for(int row = 0; row < canvas.mapHeight; row++) {
+            for(int col = 0; col < canvas.mapWidth; col++) {
+                tile_grid[row][col] = 0;
+            }
+        }
+        
+        tile_grid[canvas.mapHeight - 2][0] = 2;
+        tile_grid[canvas.mapHeight - 2][5] = 3;
+        for(int col = 0; col < canvas.mapWidth; col++) {
+            tile_grid[canvas.mapHeight - 1][col] = 1;
+        }
+    }
+
+    public void create_level(int[][] tile_grid) throws IOException {
+        for(int row = 0; row < canvas.mapHeight; row++) {
+            for(int col = 0; col < canvas.mapWidth; col++) {
+                Elements game_element = Elements.getElements(tile_grid[row][col]);
+                switch(game_element) {
+                    case Platform -> {
+                        int xPos = col * sprite_size;
+                        int yPos = row * sprite_size;
+                        Platform platform = new Platform(xPos, yPos, sprite_size, sprite_size);
+                        platforms.add(platform);
+                    }
+                    case Player -> {
+                        int xPos = col * sprite_size;
+                        int yPos = row * sprite_size;
+                        player = new Player(this, tk, sprite_size, xPos, yPos);
+                    }
+                    case BasicEnemy -> {
+
+                    }
+                    case None -> {
+
+                    }
+                }
+            }
+        }
     }
 
     public static void main(String[] args)
