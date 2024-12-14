@@ -3,7 +3,7 @@
  * data about how the level should be created.
  */
 
-package Level_Editor;
+package Enums;
 
 public enum Elements {
     None(0),

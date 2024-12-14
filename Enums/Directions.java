@@ -1,6 +1,6 @@
-package Collision;
+package Enums;
 
-public enum BoxSides {
+public enum Directions {
     TOP,
     LEFT,
     BOTTOM,

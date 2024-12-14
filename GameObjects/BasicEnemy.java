@@ -1,13 +1,17 @@
 package GameObjects;
-import AI.StatesAI;
 import Collision.*;
+import Enums.CollisionType;
+import Enums.Directions;
+import Enums.StatesAI;
+import java.util.ArrayList;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import src.*;
 public class BasicEnemy extends PhysicsObject{
    
-    public StatesAI state, direction;
+    public StatesAI state;
+    public Directions direction;
     Player player;
     Game game;
     int patrolPoint;
@@ -22,7 +26,7 @@ public class BasicEnemy extends PhysicsObject{
         this.player = player;
         patrolPoint = x;
         state = StatesAI.PATROL;
-        direction = StatesAI.RIGHT;
+        direction = Directions.RIGHT;
     }
 
     public void drawEnemy(Graphics g, Color color) {
@@ -59,8 +63,8 @@ public class BasicEnemy extends PhysicsObject{
     }
 
     @Override
-    public void update(BoxCollider toCollide) {
-        super.update(toCollide);
+    public void update(ArrayList<Platform> platforms) {
+        super.update(platforms);
         switch(state) {
             case PATROL -> {
                 int max_range = patrolPoint + range;
@@ -73,7 +77,7 @@ public class BasicEnemy extends PhysicsObject{
 
                         this.xVel -= 0.1;
                         if(this.box.tLeft.x <= min_range)
-                            direction = StatesAI.RIGHT;
+                            direction = Directions.RIGHT;
                     }
                     case RIGHT -> {
                         //When the enemy reaches the left most part of the patrol and must turn right
@@ -82,7 +86,7 @@ public class BasicEnemy extends PhysicsObject{
 
                         this.xVel += 0.1;
                         if(this.box.tLeft.x >= max_range)
-                            direction = StatesAI.LEFT;
+                            direction = Directions.LEFT;
                     }
                 }
                 if(checkRadius(player))
@@ -117,7 +121,7 @@ public class BasicEnemy extends PhysicsObject{
 
             }
         }
-        if (player.box.collide(this.box) != BoxSides.NONE){
+        if (player.box.collide(this.box) != Directions.NONE){
             System.out.println("You lose!");
             game.running = false;
         }

@@ -16,7 +16,6 @@ public class GameCanvas extends JPanel implements Runnable
     private double rate = 1000.0 / waitTime;
 
     public int cursor = 0;
-    public int crosshairSize = 30;
     public int[][] tile_grid;
 
     //This will eventually change based on file size
@@ -31,11 +30,11 @@ public class GameCanvas extends JPanel implements Runnable
     }
 
     public void setup() {
-        mapWidth = game.tk.getScreenSize().width / game.sprite_size;
-        mapHeight = game.tk.getScreenSize().height / game.sprite_size;
+        mapWidth = (game.tk.getScreenSize().width / game.sprite_size) + 1;
+        mapHeight = (game.tk.getScreenSize().height / game.sprite_size) + 1;
         tile_grid = new int[mapHeight][mapWidth];
 
-        System.out.println("Map Dimensions: " + mapHeight + " x " + mapWidth);
+        //System.out.println("Map Dimensions: " + mapHeight + " x " + mapWidth);
 
         //game.fill_tile(tile_grid, game.platforms, game.enemies);
         game.test_tile_grid(tile_grid);
@@ -45,6 +44,7 @@ public class GameCanvas extends JPanel implements Runnable
             }
             System.out.println();
         }
+        System.out.println();
     }
 
     @Override
@@ -71,23 +71,10 @@ public class GameCanvas extends JPanel implements Runnable
             for(Platform platform : game.platforms) {
                 platform.drawPlatform(g2d);
             }
+            for(BasicEnemy enemy : game.enemies) {
+                enemy.drawEnemy(g2d, Color.green);
+            }
             game.player.drawPlayer(g2d);
-            //game.enemy1.drawEnemy(g2d, Color.green);
-            /*if(game.enemy1.state != StatesAI.CHASE)
-                game.enemy1.drawEnemy(g2d, Color.green);
-            else
-                game.enemy1.drawEnemy(g2d, Color.red);*/
-
-            g2d.setColor(Color.RED);
-            g2d.drawOval(game.mouseX - crosshairSize, game.mouseY - crosshairSize, crosshairSize*2, crosshairSize*2);
-            g2d.drawLine(game.mouseX - crosshairSize, game.mouseY, game.mouseX+crosshairSize, game.mouseY);
-            g2d.drawLine(game.mouseX, game.mouseY-crosshairSize, game.mouseX, game.mouseY+crosshairSize);
-
-            /*for (int i = 0; i < game.pipes.length; i++)
-            {
-                if (game.pipes[i] != null)
-                    game.pipes[i].drawPipe(g2d);
-            }*/
 
             g2d.setColor(Color.BLACK);
             if (game.running) {
@@ -125,6 +112,7 @@ public class GameCanvas extends JPanel implements Runnable
             if (game.debug) {
                 g2d.drawString(String.format("FPS = %.1f", rate), 200, 25);
                 g2d.drawString(String.format("UPS = %.1f", game.rate), 200, 50);
+                game.player.box.drawBox(g2d);
             }
 
             graphics.drawImage(image, 0, 0, null);
@@ -135,9 +123,9 @@ public class GameCanvas extends JPanel implements Runnable
             try
             {
                 Thread.sleep(Math.max(sleep, 0));
-            } catch (InterruptedException ex)
-            {
-
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+                System.exit(0);
             }
         }
     }

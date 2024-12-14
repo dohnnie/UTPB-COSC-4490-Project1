@@ -2,19 +2,24 @@ package Collision;
 
 import java.awt.Point;
 
-public class BoxCollider extends Collider {
+import Enums.Directions;
+
+import java.awt.Graphics;
+import java.awt.Color;
+
+public class BoxCollider {
     public Point tLeft, tRight, bLeft, bRight, center;
-    int width, height;
+    public int width, height;
     public BoxCollider(int x, int y, int width, int height) {
-        super(x, y);
         this.width = width;
         this.height = height;
+
         //Since swing starts drawing from the top left of the image it'll be easier to make that the root point
         //and doing math to find stuff like the middle of the collider
-        tLeft = new Point(this.xPos, this.yPos);
-        tRight = new Point(this.xPos + width, this.yPos);
-        bLeft = new Point(this.xPos, this.yPos + height);
-        bRight = new Point(this.xPos + width, this.yPos + height);
+        tLeft = new Point(x, y);
+        tRight = new Point(x + width, y);
+        bLeft = new Point(x, y + height);
+        bRight = new Point(x + width, y + height);
         center = new Point(x + (width / 2), y + (height / 2));
     }
 
@@ -26,7 +31,12 @@ public class BoxCollider extends Collider {
         return height;
     }
 
-    public void updateColliderPoints(int xPos, int yPos) {
+    public void drawBox(Graphics g) {
+        g.setColor(Color.red);
+        g.drawRect(tLeft.x, tLeft.y, width, height);
+    }
+
+    public void updatePoints(int xPos, int yPos) {
         tLeft.x = xPos;
         tLeft.y = yPos;
         tRight.x = xPos + width; 
@@ -40,12 +50,12 @@ public class BoxCollider extends Collider {
     }
 
     // General use case for collisions between a box, and a physics box
-    public BoxSides collide(BoxCollider obj) {
+    public Directions collide(BoxCollider obj) {
         if(this.tRight.x < obj.tLeft.x || obj.tRight.x < this.tLeft.x)
-            return BoxSides.NONE;
+            return Directions.NONE;
         
         if(this.bRight.y < obj.tLeft.y || obj.bRight.y < this.tLeft.y) {
-            return BoxSides.NONE;
+            return Directions.NONE;
         }
 
         double xDist = this.center.x - obj.center.x;
@@ -56,19 +66,19 @@ public class BoxCollider extends Collider {
         
         switch (angle) {
             case 0, 7 -> { 
-                return BoxSides.LEFT;
+                return Directions.LEFT;
             }
             case 1, 2 -> {
-                return BoxSides.TOP;
+                return Directions.TOP;
             }
             case 3, 4 -> {
-                return BoxSides.RIGHT;
+                return Directions.RIGHT;
             }
             case 5, 6 -> {
-                return BoxSides.BOTTOM;
+                return Directions.BOTTOM;
             }
             default -> {
-                return BoxSides.NONE;
+                return Directions.NONE;
             }
         }
     }

@@ -1,13 +1,18 @@
+/*
+ * UNUSED CLASS THERE IS NO FUNCTIONALITY IMPLEMENTED FOR THIS CLASS
+ */
+
 package Collision;
 
 import GameObjects.StaticObject;
 
-public class CircleCollider extends Collider {
+public class CircleCollider {
     int radius;
     int center;
 
     public CircleCollider(int x, int y) {
-        super(x, y);
+        center = x;
+        radius = y;
     }
 
     public boolean collide(BoxCollider obj) {

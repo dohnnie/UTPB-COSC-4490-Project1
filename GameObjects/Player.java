@@ -1,6 +1,9 @@
 package GameObjects;
 
 import Collision.*;
+import Enums.CollisionType;
+import Enums.Directions;
+import java.util.ArrayList;
 import java.awt.*;
 import java.awt.image.*;
 import java.io.*;
@@ -10,7 +13,7 @@ import src.Game;
 public class Player extends PhysicsObject{
     Game game;
     Toolkit tk;
-    public BoxSides direction;
+    public Directions direction;
     int init_jump_count = 2; 
     public int jumps = init_jump_count;
     double pMaxYSpeed = -2;
@@ -32,10 +35,7 @@ public class Player extends PhysicsObject{
     }
 
     public void drawPlayer(Graphics g) {
-        g.drawImage(playerImage, this.box.tLeft.x, this.box.tLeft.y, null);
-
-        g.setColor(Color.red);
-        g.drawRect(this.box.tLeft.x, this.box.tLeft.y, this.width, this.height);
+        g.drawImage(playerImage, box.tLeft.x, box.tLeft.y, null);
     }
 
     public void move() {
@@ -51,9 +51,9 @@ public class Player extends PhysicsObject{
     }
 
     @Override
-    public void update(BoxCollider obj) {
-        super.update(obj);
-        if(this.cDirection == BoxSides.TOP)
+    public void update(ArrayList<Platform> platforms) {
+        super.update(platforms);
+        if(this.cDirection == Directions.TOP)
             jumps = init_jump_count;
     }
 
