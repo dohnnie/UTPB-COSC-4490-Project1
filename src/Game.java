@@ -23,6 +23,8 @@ public class Game implements Runnable
     Player player;
     public double pMaxSpeed = 5;
     double pAcceleration = 0.1;
+    boolean goUp = false;
+    boolean goDown = false;
     boolean goRight = false;
     boolean goLeft = false;
 
@@ -59,7 +61,7 @@ public class Game implements Runnable
 
         try {
             testSprite = new Sprite("Figure.png", this, new Point(0, 0));
-            create_level(canvas.tile_grid);
+            //create_level(canvas.tile_grid);
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(0);
@@ -136,16 +138,19 @@ public class Game implements Runnable
                         }
                     }
                     case KeyEvent.VK_W -> {
-
+                        goUp = true;
                     }
                     case KeyEvent.VK_A -> {
                         goLeft = true;
                     }
                     case KeyEvent.VK_S -> {
-
+                        goDown = true;
                     }
                     case KeyEvent.VK_D -> {
                         goRight = true;
+                    }
+                    case KeyEvent.VK_1 -> {
+                        debug = !debug;
                     }
                 }
             }
@@ -155,12 +160,20 @@ public class Game implements Runnable
             {
                 switch(e.getKeyCode()) {
                     case KeyEvent.VK_A -> {
-                        player.xVel = 0;
+                        testSprite.xVel = 0;
                         goLeft = false;
                     }
                     case KeyEvent.VK_D -> {
-                        player.xVel = 0;
+                        testSprite.xVel = 0;
                         goRight = false;
+                    }
+                    case KeyEvent.VK_W -> {
+                        testSprite.yVel = 0;
+                        goUp = false;
+                    }
+                    case KeyEvent.VK_S -> {
+                        testSprite.yVel = 0;
+                        goDown = false;
                     }
                 }
             }
@@ -178,28 +191,42 @@ public class Game implements Runnable
             {
 
                 if(goLeft) {
-                    System.out.println("Player xVel: " + player.xVel);
+                    /*System.out.println("Player xVel: " + player.xVel);
                     player.xVel -= pAcceleration;
                     player.xVel = Math.max(player.xVel, -pMaxSpeed);
-                    player.move();
+                    player.move();*/
+                    testSprite.xVel -= 0.1f;
+                    testSprite.moveHorizontal();
                 }
                 
                 if(goRight) {
-                    System.out.println("Player xVel: " + player.xVel);
+                    /*System.out.println("Player xVel: " + player.xVel);
                     player.xVel += pAcceleration;
                     player.xVel = Math.min(player.xVel, pMaxSpeed);
-                    player.move();
+                    player.move();*/
+                    testSprite.xVel += 0.1f;
+                    testSprite.moveHorizontal();
+                }
+
+                if(goUp) {
+                    testSprite.yVel -= 0.1f;
+                    testSprite.moveVertical();
+                }
+
+                if(goDown) {
+                    testSprite.yVel += 0.1f;
+                    testSprite.moveVertical();
                 }
 
                 //player.update(ground.box);
                 //Creates a logic error, where it will check other platform colliders, and since it's not colliding
                 //With the other colliders it will keep falling and it falls fast cuz it's increasing the velocity times the amount of platforms
                 //being checked
-                player.debug_h();
+                /*player.debug_h();
                 player.update(platforms);
                 for(BasicEnemy enemy : enemies) {
                     enemy.update(platforms);
-                }
+                }*/
             }
 
             long sleep = (long) waitTime - (System.nanoTime() - startTime) / 1000000;

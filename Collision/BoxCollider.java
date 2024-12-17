@@ -3,54 +3,84 @@ package Collision;
 import java.awt.Point;
 
 import Enums.Directions;
-
+import GameObjects.Sprite;
+import java.util.ArrayList;
 import java.awt.Graphics;
 import java.awt.Color;
 
 public class BoxCollider {
-    public Point tLeft, tRight, bLeft, bRight, center;
+    public Point center;
     public int width, height;
+
     public BoxCollider(int x, int y, int width, int height) {
         this.width = width;
         this.height = height;
 
-        //Since swing starts drawing from the top left of the image it'll be easier to make that the root point
-        //and doing math to find stuff like the middle of the collider
-        tLeft = new Point(x, y);
-        tRight = new Point(x + width, y);
-        bLeft = new Point(x, y + height);
-        bRight = new Point(x + width, y + height);
         center = new Point(x + (width / 2), y + (height / 2));
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
     }
 
     public void drawBox(Graphics g) {
         g.setColor(Color.red);
-        g.drawRect(tLeft.x, tLeft.y, width, height);
+        g.drawRect(center.x - (width / 2), center.y - (height / 2), width, height);
     }
 
-    public void updatePoints(int xPos, int yPos) {
-        tLeft.x = xPos;
-        tLeft.y = yPos;
-        tRight.x = xPos + width; 
-        tRight.y = yPos;
-        bLeft.x = xPos; 
-        bLeft.y = yPos + height;
-        bRight.x = xPos + width; 
-        bRight.y = yPos + height;
-        center.x = xPos + (width / 2);
-        center.y = yPos + (height / 2);
+    public float getLeft() {
+        return center.x - (width / 2);
+    }
+
+    public void setLeft(float newLeft) {
+        center.x = (int) newLeft + (width / 2);
+    }
+
+    public float getRight() {
+        return center.x + (width / 2);
+    }
+
+    public void setRight(float newRight) {
+        center.x = (int) newRight - (width / 2);
+    }
+
+    public float getTop() {
+        return center.y - (height / 2);
+    }
+
+    public void setTop(float newTop) {
+        center.y = (int) newTop + (height / 2);
+    }
+
+    public float getBottom() {
+        return center.y + (height / 2);
+    }
+
+    public void setBottom(float newBottom) {
+        center.y = (int) newBottom - (height / 2);
+    }
+
+    public static boolean checkCollision(Sprite s1, Sprite s2) {
+        boolean noXOverlap = s1.box.getRight() <= s2.box.getLeft() || s1.box.getRight() >= s2.box.getRight();
+        boolean noYOverlap = s1.box.getBottom() <= s2.box.getTop() || s1.box.getTop() >= s2.box.getBottom();
+
+        if(noXOverlap || noYOverlap) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+    public static ArrayList<Sprite> checkCollisionList(Sprite sprite, ArrayList<Sprite> list) {
+        ArrayList<Sprite> collisionList = new ArrayList<>();
+        for(Sprite toCollide : list) {
+            if(checkCollision(sprite, toCollide)) {
+                collisionList.add(toCollide);
+            }
+        }
+
+        return collisionList;
     }
 
     // General use case for collisions between a box, and a physics box
-    public Directions collide(BoxCollider obj) {
+    /*public Directions collide(BoxCollider obj) {
         if(this.tRight.x < obj.tLeft.x || obj.tRight.x < this.tLeft.x)
             return Directions.NONE;
         
@@ -81,5 +111,5 @@ public class BoxCollider {
                 return Directions.NONE;
             }
         }
-    }
+    }*/
 }

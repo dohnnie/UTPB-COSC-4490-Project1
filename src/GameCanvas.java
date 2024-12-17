@@ -69,13 +69,14 @@ public class GameCanvas extends JPanel implements Runnable
             }*/
 
             game.testSprite.draw(g2d);
-            for(Platform platform : game.platforms) {
+            game.testSprite.box.drawBox(g2d);
+            /*for(Platform platform : game.platforms) {
                 platform.drawPlatform(g2d);
             }
             for(BasicEnemy enemy : game.enemies) {
                 enemy.drawEnemy(g2d, Color.green);
             }
-            game.player.drawPlayer(g2d);
+            game.player.drawPlayer(g2d);*/
 
             g2d.setColor(Color.BLACK);
             if (game.running) {
@@ -113,7 +114,7 @@ public class GameCanvas extends JPanel implements Runnable
             if (game.debug) {
                 g2d.drawString(String.format("FPS = %.1f", rate), 200, 25);
                 g2d.drawString(String.format("UPS = %.1f", game.rate), 200, 50);
-                game.player.box.drawBox(g2d);
+                //game.player.box.drawBox(g2d);
             }
 
             graphics.drawImage(image, 0, 0, null);
