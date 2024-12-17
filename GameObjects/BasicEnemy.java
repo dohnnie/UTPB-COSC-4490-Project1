@@ -1,5 +1,5 @@
 package GameObjects;
-import Collision.*;
+
 import Enums.CollisionType;
 import Enums.Directions;
 import Enums.StatesAI;
@@ -87,6 +87,15 @@ public class BasicEnemy extends PhysicsObject{
                         this.xVel += 0.1;
                         if(this.box.tLeft.x >= max_range)
                             direction = Directions.LEFT;
+                    }
+                    case BOTTOM -> {
+
+                    }
+                    case TOP -> {
+
+                    }
+                    case NONE -> {
+
                     }
                 }
                 if(checkRadius(player))

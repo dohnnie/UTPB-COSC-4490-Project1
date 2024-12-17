@@ -1,6 +1,5 @@
 package GameObjects;
 
-import Collision.*;
 import Enums.CollisionType;
 import Enums.Directions;
 import java.util.ArrayList;

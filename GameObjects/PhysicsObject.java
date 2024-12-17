@@ -4,7 +4,6 @@ import Collision.*;
 import Enums.CollisionType;
 import Enums.Directions;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import java.awt.Point;
 public class PhysicsObject {
@@ -16,7 +15,6 @@ public class PhysicsObject {
 
     public Point root, initPoint;
     public BoxCollider box;
-    public CircleCollider circle;
     public Directions cDirection;
 
     public PhysicsObject(int xPos, int yPos, int width, int height, CollisionType cType) {
@@ -26,15 +24,7 @@ public class PhysicsObject {
         this.height = height;
         this.xVel = 0;
         this.yVel = 0;
-        switch (cType) {
-            case BOX -> {
-                box = new BoxCollider(root.x, root.y, width, height); 
-            }
-            case CIRCLE -> {
-                //Remember to change this to the center of the circle rather than top left of a box
-                circle = new CircleCollider(root.x, root.y);
-            }
-        }
+        box = new BoxCollider(root.x, root.y, width, height); 
     }
 
     public void reset() {

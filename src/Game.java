@@ -1,7 +1,6 @@
 package src;
 
 import GameObjects.*;
-import Level_Editor.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
@@ -20,6 +19,7 @@ public class Game implements Runnable
 
     public int sprite_size = 100;
 
+    Sprite testSprite;
     Player player;
     public double pMaxSpeed = 5;
     double pAcceleration = 0.1;
@@ -58,6 +58,7 @@ public class Game implements Runnable
         frame.add(canvas);
 
         try {
+            testSprite = new Sprite("Figure.png", this, new Point(0, 0));
             create_level(canvas.tile_grid);
         } catch (IOException e) {
             e.printStackTrace();

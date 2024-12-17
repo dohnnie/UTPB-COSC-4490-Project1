@@ -34,7 +34,7 @@ public class GameCanvas extends JPanel implements Runnable
         mapHeight = (game.tk.getScreenSize().height / game.sprite_size) + 1;
         tile_grid = new int[mapHeight][mapWidth];
 
-        //System.out.println("Map Dimensions: " + mapHeight + " x " + mapWidth);
+        System.out.println("Map Dimensions: " + mapHeight + " x " + mapWidth);
 
         //game.fill_tile(tile_grid, game.platforms, game.enemies);
         game.test_tile_grid(tile_grid);
@@ -68,6 +68,7 @@ public class GameCanvas extends JPanel implements Runnable
                     game.clouds[i].drawCloud(g2d);
             }*/
 
+            game.testSprite.draw(g2d);
             for(Platform platform : game.platforms) {
                 platform.drawPlatform(g2d);
             }

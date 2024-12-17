@@ -1,6 +1,5 @@
 package GameObjects;
 
-import Collision.*;
 import Enums.CollisionType;
 
 import java.awt.Color;
