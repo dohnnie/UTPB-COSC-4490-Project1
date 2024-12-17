@@ -4,6 +4,7 @@ import Collision.*;
 import Enums.CollisionType;
 import Enums.Directions;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import java.awt.Point;
 public class PhysicsObject {
@@ -45,9 +46,11 @@ public class PhysicsObject {
 
     //Modify to accept an array of platforms
     public void update(ArrayList<Platform> platforms) {
+        //HashMap<Directions, BoxCollider> toCollide = new HashMap<>(); 
         box.updatePoints(root.x, root.y);
         for(Platform platform : platforms) {
             cDirection = box.collide(platform.box);
+            //toCollide.put(cDirection, box);
             switch(cDirection) {
                 case TOP -> {
                     int offset =  box.bLeft.y - platform.box.tLeft.y;
@@ -56,6 +59,7 @@ public class PhysicsObject {
                     box.bLeft.y -= offset;
                     box.bRight.y -= offset;
                     yVel = 0.0f;
+                    break;
                 }
                 case LEFT -> {
                     int offset = box.tRight.x - platform.box.tLeft.x;
@@ -85,7 +89,9 @@ public class PhysicsObject {
                     yVel += gravity;
                 }
             }
-            break;
+            //This line causes the loop to break after the first element so it's only checking the first element
+
+            //break;
         }
         root.y += yVel;
     }

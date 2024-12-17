@@ -194,6 +194,7 @@ public class Game implements Runnable
                 //Creates a logic error, where it will check other platform colliders, and since it's not colliding
                 //With the other colliders it will keep falling and it falls fast cuz it's increasing the velocity times the amount of platforms
                 //being checked
+                player.debug_h();
                 player.update(platforms);
                 for(BasicEnemy enemy : enemies) {
                     enemy.update(platforms);
