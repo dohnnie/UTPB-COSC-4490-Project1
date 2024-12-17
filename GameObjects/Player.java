@@ -42,6 +42,11 @@ public class Player extends PhysicsObject{
         root.x += xVel;
     }
 
+    public void debug_h() {
+        xVel += Math.min(0.1f, 5);
+        root.x += xVel;
+    }
+
     public void jump() {
         if(jumps > 0) {
             yVel -= 10;
