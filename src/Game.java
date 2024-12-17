@@ -1,7 +1,9 @@
 package src;
 
 import GameObjects.*;
+import LevelEditor.*;
 import java.awt.*;
+import java.io.*;
 import java.awt.event.*;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,6 +21,7 @@ public class Game implements Runnable
 
     public int sprite_size = 100;
 
+    LevelLoader loader;
     Sprite testSprite;
     Player player;
     public double pMaxSpeed = 5;
@@ -60,7 +63,8 @@ public class Game implements Runnable
         frame.add(canvas);
 
         try {
-            testSprite = new Sprite("Figure.png", this, new Point(0, 0));
+            loader = new LevelLoader(new File(".\\LevelEditor\\test_level.csv"));
+            createLevel(loader.tile_map);
             //create_level(canvas.tile_grid);
         } catch (IOException e) {
             e.printStackTrace();
@@ -189,7 +193,7 @@ public class Game implements Runnable
 
             if (running)
             {
-
+                testSprite.box.update();
                 if(goLeft) {
                     /*System.out.println("Player xVel: " + player.xVel);
                     player.xVel -= pAcceleration;
@@ -249,31 +253,10 @@ public class Game implements Runnable
         running = true;
     }
 
-    public void fill_tile(int[][] tile_grid, Platform[] platforms, BasicEnemy[] enemies) {
-        
-        for(int row = 0; row < canvas.mapWidth; row++) {
-            tile_grid[row][canvas.mapHeight - 1] = 1;
-        }
-    }
-
-    public void test_tile_grid(int[][] tile_grid) {
-        for(int row = 0; row < canvas.mapHeight; row++) {
-            for(int col = 0; col < canvas.mapWidth; col++) {
-                tile_grid[row][col] = 0;
-            }
-        }
-        
-        tile_grid[canvas.mapHeight - 2][0] = 2;
-        tile_grid[canvas.mapHeight - 2][5] = 3;
-        for(int col = 0; col < canvas.mapWidth; col++) {
-            tile_grid[canvas.mapHeight - 1][col] = 1;
-        }
-    }
-
-    public void create_level(int[][] tile_grid) throws IOException {
-        for(int row = 0; row < canvas.mapHeight; row++) {
-            for(int col = 0; col < canvas.mapWidth; col++) {
-                Elements game_element = Elements.getElements(tile_grid[row][col]);
+    public void createLevel(int[][] tile_map) throws IOException{
+        for(int row = 0; row < loader.tile_map.length; row++) {
+            for(int col = 0; col < loader.tile_map[row].length; col++) {
+                Elements game_element = Elements.getElements(tile_map[row][col]);
                 int xPos = (col) * sprite_size;
                 int yPos = (row) * sprite_size;
                 switch(game_element) {
@@ -282,7 +265,7 @@ public class Game implements Runnable
                         platforms.add(platform);
                     }
                     case Player -> {
-                        player = new Player(this, tk, sprite_size, xPos, yPos);
+                        testSprite = new Sprite("Figure.png", this, new Point(xPos, yPos));
                     }
                     case BasicEnemy -> {
                         BasicEnemy enemy = new BasicEnemy(xPos, yPos, sprite_size, sprite_size, player, this);

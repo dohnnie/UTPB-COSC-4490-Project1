@@ -9,51 +9,52 @@ import java.awt.Graphics;
 import java.awt.Color;
 
 public class BoxCollider {
-    public Point center;
+    public float centerX, centerY;
     public int width, height;
 
     public BoxCollider(int x, int y, int width, int height) {
         this.width = width;
         this.height = height;
 
-        center = new Point(x + (width / 2), y + (height / 2));
+        centerX = x + (width / 2);
+        centerY = y + (height / 2);
     }
 
     public void drawBox(Graphics g) {
         g.setColor(Color.red);
-        g.drawRect(center.x - (width / 2), center.y - (height / 2), width, height);
+        g.drawRect((int)centerX - (width / 2), (int)centerY - (height / 2), width, height);
     }
 
     public float getLeft() {
-        return center.x - (width / 2);
+        return centerX - (width / 2);
     }
 
     public void setLeft(float newLeft) {
-        center.x = (int) newLeft + (width / 2);
+        centerX = newLeft + (width / 2);
     }
 
     public float getRight() {
-        return center.x + (width / 2);
+        return centerX + (width / 2);
     }
 
     public void setRight(float newRight) {
-        center.x = (int) newRight - (width / 2);
+        centerX = newRight - (width / 2);
     }
 
     public float getTop() {
-        return center.y - (height / 2);
+        return centerY - (height / 2);
     }
 
     public void setTop(float newTop) {
-        center.y = (int) newTop + (height / 2);
+        centerY = newTop + (height / 2);
     }
 
     public float getBottom() {
-        return center.y + (height / 2);
+        return centerY + (height / 2);
     }
 
     public void setBottom(float newBottom) {
-        center.y = (int) newBottom - (height / 2);
+        centerY = newBottom - (height / 2);
     }
 
     public static boolean checkCollision(Sprite s1, Sprite s2) {
@@ -77,6 +78,10 @@ public class BoxCollider {
         }
 
         return collisionList;
+    }
+
+    public void update() {
+        //System.out.println("Box X Velocity: " + centerX +", Box Y Velocity: " + centerY);
     }
 
     // General use case for collisions between a box, and a physics box

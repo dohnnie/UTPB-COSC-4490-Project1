@@ -16,7 +16,6 @@ public class GameCanvas extends JPanel implements Runnable
     private double rate = 1000.0 / waitTime;
 
     public int cursor = 0;
-    public int[][] tile_grid;
 
     //This will eventually change based on file size
     public int mapWidth, mapHeight;
@@ -32,19 +31,8 @@ public class GameCanvas extends JPanel implements Runnable
     public void setup() {
         mapWidth = (game.tk.getScreenSize().width / game.sprite_size) + 1;
         mapHeight = (game.tk.getScreenSize().height / game.sprite_size) + 1;
-        tile_grid = new int[mapHeight][mapWidth];
 
         System.out.println("Map Dimensions: " + mapHeight + " x " + mapWidth);
-
-        //game.fill_tile(tile_grid, game.platforms, game.enemies);
-        game.test_tile_grid(tile_grid);
-        for(int row = 0; row < mapHeight; row++) {
-            for(int col = 0; col < mapWidth; col++) {
-                System.out.print(tile_grid[row][col]);
-            }
-            System.out.println();
-        }
-        System.out.println();
     }
 
     @Override
