@@ -29,8 +29,8 @@ public class GameCanvas extends JPanel implements Runnable
     }
 
     public void setup() {
-        mapWidth = (game.tk.getScreenSize().width / game.sprite_size) + 1;
-        mapHeight = (game.tk.getScreenSize().height / game.sprite_size) + 1;
+        mapWidth = (game.tk.getScreenSize().width / game.spriteSize) + 1;
+        mapHeight = (game.tk.getScreenSize().height / game.spriteSize) + 1;
 
         System.out.println("Map Dimensions: " + mapHeight + " x " + mapWidth);
     }
@@ -56,15 +56,14 @@ public class GameCanvas extends JPanel implements Runnable
                     game.clouds[i].drawCloud(g2d);
             }*/
 
-            game.testSprite.draw(g2d);
-            game.testSprite.box.drawBox(g2d);
-            /*for(Platform platform : game.platforms) {
-                platform.drawPlatform(g2d);
+            game.player.draw(g2d);
+            game.player.box.drawBox(g2d);
+            for(Sprite platform : game.platforms) {
+                platform.draw(g2d);
             }
-            for(BasicEnemy enemy : game.enemies) {
-                enemy.drawEnemy(g2d, Color.green);
+            for(Sprite enemy : game.enemies) {
+                enemy.draw(g2d);
             }
-            game.player.drawPlayer(g2d);*/
 
             g2d.setColor(Color.BLACK);
             if (game.running) {
@@ -84,20 +83,7 @@ public class GameCanvas extends JPanel implements Runnable
                     }
                 }
                 g2d.drawString(String.format("%s Volume %s", cursor == 2 ? ">" : " ", vol), 25, 75);
-                g2d.drawString(String.format("%s Randomize Gaps %s", cursor == 3 ? ">" : " ", game.randomGaps ? "(ON)" : "(OFF)"), 25, 100);
-                String dif = "";
-                for (double i = 0.0; i <= 3.0; i+= 0.5)
-                {
-                    if (game.difficulty == i)
-                    {
-                        dif += "|";
-                    } else {
-                        dif += "-";
-                    }
-                }
-                g2d.drawString(String.format("%s Difficulty %s", cursor == 4 ? ">" : " ", dif), 25, 125);
-                g2d.drawString(String.format("%s Ramping %s", cursor == 5 ? ">" : " ", game.ramping ? "(ON)" : "(OFF)"), 25, 150);
-                g2d.drawString(String.format("%s Debug Mode %s", cursor == 6 ? ">" : " ", game.debug ? "(ON)" : "(OFF)"), 25, 175);
+                g2d.drawString(String.format("%s Debug Mode %s", cursor == 6 ? ">" : " ", game.debug ? "(ON)" : "(OFF)"), 25, 100);
             }
             if (game.debug) {
                 g2d.drawString(String.format("FPS = %.1f", rate), 200, 25);

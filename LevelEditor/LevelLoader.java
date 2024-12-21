@@ -2,20 +2,18 @@ package LevelEditor;
 
 import java.io.*;
 import java.util.ArrayList;
+import Enums.Elements;
+import GameObjects.Sprite;
+import java.awt.Point;
 
 public class LevelLoader {
 
-    public int[][] tile_map;
-
-    public LevelLoader(File level) throws IOException {
-        tile_map = readCSV(level);
-    }
-
+    public int[][] tileGrid;
     /*
      * Takes a file path as an input, and if the file exists it will
      * go through the file and return a 2d int array of the csv data
      */
-    private static int[][] readCSV(File csvFile) {
+    public static int[][] readCSV(File csvFile) throws IOException {
         BufferedReader br = null;
         String line = "";
         int rows = 0, cols = 0;
@@ -58,5 +56,33 @@ public class LevelLoader {
         int[][] finalData = new int[rows][cols];
         System.arraycopy(data, 0, finalData, 0, rows);
         return finalData;
+    }
+
+    public static void createLevel(int[][] tileGrid, int spriteSize, ArrayList<Sprite> platforms, ArrayList<Sprite> enemies, Sprite[] player)
+    throws IOException{
+        for(int row = 0; row < tileGrid.length; row++) {
+            for(int col = 0; col < tileGrid[row].length; col++) {
+                Elements game_element = Elements.getElements(tileGrid[row][col]);
+                int xPos = (col) * spriteSize;
+                int yPos = (row) * spriteSize;
+                switch(game_element) {
+                    case Platform -> {
+                        Sprite platform = new Sprite("Brick.png", new Point(xPos, yPos));
+                        platforms.add(platform);
+                    }
+                    case Player -> {
+                        Sprite temp = new Sprite("Figure.png", new Point(xPos, yPos));
+                        player[0] = (temp);
+                    }
+                    case BasicEnemy -> {
+                        Sprite enemy = new Sprite("Goomba.png",  new Point(xPos, yPos));
+                        enemies.add(enemy);
+                    }
+                    case None -> {
+
+                    }
+                }
+            }
+        }
     }
 }

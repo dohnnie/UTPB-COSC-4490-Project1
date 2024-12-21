@@ -80,6 +80,36 @@ public class BoxCollider {
         return collisionList;
     }
 
+    public static void resolvePlatformCollisions(Sprite s, ArrayList<Sprite> walls) {
+        s.yVel += s.GRAVITY;
+
+        s.box.centerY += s.yVel;
+        ArrayList<Sprite> colList = BoxCollider.checkCollisionList(s, walls);
+        //System.out.println("Vertical Collision List: " + colList.size());
+        if(colList.size() > 0) {
+            Sprite collided = colList.get(0);
+            if(s.yVel > 0) {
+                s.box.setBottom(collided.box.getTop());
+            } else if(s.yVel < 0){
+                s.box.setTop(collided.box.getBottom());
+            }
+            s.yVel = 0;
+        }
+
+        s.box.centerX += s.xVel;
+        colList = BoxCollider.checkCollisionList(s, walls);
+        //System.out.println("Horizontal Collision List: " + colList.size());
+        if(colList.size() > 0) {
+            Sprite collided = colList.get(0);
+            if(s.xVel > 0) {
+                s.box.setRight(collided.box.getLeft());
+            } else if(s.xVel < 0){
+                s.box.setLeft(collided.box.getRight());
+            }
+            s.xVel = 0;
+        }
+    }
+
     public void update() {
         //System.out.println("Box X Velocity: " + centerX +", Box Y Velocity: " + centerY);
     }

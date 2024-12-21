@@ -8,14 +8,15 @@ import java.awt.*;
 import java.io.*;
 import src.*;
 
+
 public class Sprite {
+    public final float GRAVITY = 0.6f
+    ;
     BufferedImage playerImage;
-    Game game; //Might not need this
     public BoxCollider box;
     public float xVel, yVel;
 
-    Sprite(String imageFile, Game game, Point origin, int w, int h) throws IOException {
-        this.game = game;
+    Sprite(String imageFile, Point origin, int w, int h) throws IOException {
         box = new BoxCollider(origin.x, origin.y, w, h);
 
         playerImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
@@ -28,8 +29,8 @@ public class Sprite {
         yVel = 0;
     }
 
-    public Sprite(String imageFile, Game game, Point origin) throws IOException{
-        this(imageFile, game, origin, 100, 100);
+    public Sprite(String imageFile, Point origin) throws IOException{
+        this(imageFile, origin, 100, 100);
     }
 
     public void draw(Graphics g) {
@@ -50,6 +51,7 @@ public class Sprite {
     }
 
     public void update() {
-
+        box.centerX += yVel;
+        box.centerY += xVel;
     }
 }
