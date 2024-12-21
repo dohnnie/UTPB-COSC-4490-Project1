@@ -1,10 +1,11 @@
 package LevelEditor;
 
-import java.io.*;
-import java.util.ArrayList;
 import Enums.Elements;
 import GameObjects.Sprite;
+
+import java.io.*;
 import java.awt.Point;
+import java.util.ArrayList;
 
 public class LevelLoader {
 

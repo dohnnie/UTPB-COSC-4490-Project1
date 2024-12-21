@@ -2,68 +2,78 @@ package src;
 
 import GameObjects.*;
 import LevelEditor.*;
-import java.awt.*;
+import Collision.BoxCollider;
+
 import java.io.*;
+import java.awt.*;
+import javax.swing.*;
 import java.awt.event.*;
 import java.io.IOException;
 import java.util.ArrayList;
-import javax.swing.*;
-import Collision.BoxCollider;
-import Enums.Elements;
 
+/*
+ * Class responsible for handling all the game logic, entry point for program
+ */
 public class Game implements Runnable
 {
+    public Toolkit tk;
     private final GameCanvas canvas;
+    public final int SPRITE_SIZE = 100;
 
+    //Player movement clamps and flags
+    public Sprite player;
+    private boolean goRight = false;
+    private boolean goLeft = false;
+    public final double MAX_X_SPEED = 5;
+    public final double ACCELERATION = 0.1;
+
+    //Related to fps
     private final double rateTarget = 100.0;
     public double waitTime = 1000.0 / rateTarget;
     public double rate = 1000 / waitTime;
 
-    public int spriteSize = 100;
-
-    LevelLoader loader;
+    //Array objects needed to load level data
     int[][] tileGrid;
     public ArrayList<Sprite> platforms;
     public ArrayList<Sprite> enemies;
-    public Sprite[] players = new Sprite[1];
 
-    public Sprite player;
-    public double pMaxSpeed = 5;
-    double pAcceleration = 0.1;
-    boolean goRight = false;
-    boolean goLeft = false;
-
-    public Toolkit tk;
+    //Misc.
     public boolean debug = false;
     public boolean running = true;
     public double volume = 0.3;
 
     public Game()
     {
+        //Initializes a JFrame
         JFrame frame = new JFrame("Game");
-
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-
         frame.setUndecorated(true);
 
+        //Gets Screen Size
         tk = Toolkit.getDefaultToolkit();
         System.out.println("Screen Width: " + tk.getScreenSize().width + ", Screen Height: " + tk.getScreenSize().height);
 
         frame.setVisible(true);
         frame.requestFocus();
 
+        //From this point on, the program can draw to the JFrame
         canvas = new GameCanvas(this, frame.getGraphics(), tk);
-        canvas.setup();
+        canvas.setup(); //starts initial settings for canvas
         frame.add(canvas);
 
+        //Starts loading file data into necessary arrays
         try {
-            tileGrid = LevelLoader.readCSV(new File(".\\LevelEditor\\test_level.csv"));
             platforms = new ArrayList<>();
             enemies = new ArrayList<>();
-            LevelLoader.createLevel(tileGrid, spriteSize, platforms, enemies, players);
-            player = players[0];
+            tileGrid = LevelLoader.readCSV(new File(".\\LevelEditor\\test_level.csv"));
+            //I have to do a funky workaround for pass by reference when loading player data
+            Sprite[] playerRef = new Sprite[1];
+
+            LevelLoader.createLevel(tileGrid, SPRITE_SIZE, platforms, enemies, playerRef);
+            player = playerRef[0];
+
+            //Debug print statements
             System.out.println("Platform Amount: " + platforms.size());
             System.out.println("Enemies Amount: " + enemies.size());
         } catch (IOException e) {
@@ -71,9 +81,11 @@ public class Game implements Runnable
             System.exit(0);
         }
 
+        //Startins drawing to the JFrame
         Thread drawLoop = new Thread(canvas);
         drawLoop.start();
 
+        //Player controls
         frame.addKeyListener(new KeyListener()
         {
             @Override
@@ -134,15 +146,18 @@ public class Game implements Runnable
                     case KeyEvent.VK_W -> {
 
                     }
+                    //Move Left
                     case KeyEvent.VK_A -> {
                         goLeft = true;
                     }
                     case KeyEvent.VK_S -> {
 
                     }
+                    //Move Right
                     case KeyEvent.VK_D -> {
                         goRight = true;
                     }
+                    //Enables and disables debug
                     case KeyEvent.VK_1 -> {
                         debug = !debug;
                     }
@@ -153,10 +168,12 @@ public class Game implements Runnable
             public void keyReleased(KeyEvent e)
             {
                 switch(e.getKeyCode()) {
+                    //Stops moving left
                     case KeyEvent.VK_A -> {
                         player.xVel = 0;
                         goLeft = false;
                     }
+                    //Stops moving right
                     case KeyEvent.VK_D -> {
                         player.xVel = 0;
                         goRight = false;
@@ -166,6 +183,7 @@ public class Game implements Runnable
         });
     }
 
+    //Game Logic starts
     @Override
     public void run()
     {
@@ -184,6 +202,8 @@ public class Game implements Runnable
                     player.xVel += 0.1f;
                     player.moveHorizontal();
                 }
+
+                //Checks for collisions and resolves them
                 BoxCollider.resolvePlatformCollisions(player, platforms);
             }
 

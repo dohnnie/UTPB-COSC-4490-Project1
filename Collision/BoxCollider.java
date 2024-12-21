@@ -1,12 +1,10 @@
 package Collision;
 
-import java.awt.Point;
-
-import Enums.Directions;
 import GameObjects.Sprite;
-import java.util.ArrayList;
-import java.awt.Graphics;
+
 import java.awt.Color;
+import java.awt.Graphics;
+import java.util.ArrayList;
 
 public class BoxCollider {
     public float centerX, centerY;
@@ -61,7 +59,7 @@ public class BoxCollider {
         boolean noXOverlap = s1.box.getRight() <= s2.box.getLeft() || s1.box.getRight() >= s2.box.getRight();
         boolean noYOverlap = s1.box.getBottom() <= s2.box.getTop() || s1.box.getTop() >= s2.box.getBottom();
 
-        if(noXOverlap || noYOverlap) {
+        if(noXOverlap && noYOverlap) {
             return false;
         }
         else {
@@ -108,10 +106,6 @@ public class BoxCollider {
             }
             s.xVel = 0;
         }
-    }
-
-    public void update() {
-        //System.out.println("Box X Velocity: " + centerX +", Box Y Velocity: " + centerY);
     }
 
     // General use case for collisions between a box, and a physics box

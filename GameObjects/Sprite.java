@@ -1,12 +1,11 @@
 package GameObjects;
 
 import Collision.BoxCollider;
-import javax.imageio.ImageIO;
 
-import java.awt.image.*;
-import java.awt.*;
 import java.io.*;
-import src.*;
+import java.awt.*;
+import java.awt.image.*;
+import javax.imageio.ImageIO;
 
 
 public class Sprite {

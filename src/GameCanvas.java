@@ -1,9 +1,10 @@
 package src;
 
 import GameObjects.*;
+
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import javax.swing.*;
+import java.awt.image.BufferedImage;
 
 public class GameCanvas extends JPanel implements Runnable
 {
@@ -29,8 +30,8 @@ public class GameCanvas extends JPanel implements Runnable
     }
 
     public void setup() {
-        mapWidth = (game.tk.getScreenSize().width / game.spriteSize) + 1;
-        mapHeight = (game.tk.getScreenSize().height / game.spriteSize) + 1;
+        mapWidth = (game.tk.getScreenSize().width / game.SPRITE_SIZE) + 1;
+        mapHeight = (game.tk.getScreenSize().height / game.SPRITE_SIZE) + 1;
 
         System.out.println("Map Dimensions: " + mapHeight + " x " + mapWidth);
     }
@@ -50,14 +51,7 @@ public class GameCanvas extends JPanel implements Runnable
             g2d.setColor(Color.CYAN);
             g2d.fillRect(0, 0, width, height);
 
-            /*for (int i = 0; i < game.clouds.length; i++)
-            {
-                if (game.clouds[i] != null && !game.clouds[i].passed)
-                    game.clouds[i].drawCloud(g2d);
-            }*/
-
             game.player.draw(g2d);
-            game.player.box.drawBox(g2d);
             for(Sprite platform : game.platforms) {
                 platform.draw(g2d);
             }
@@ -88,7 +82,13 @@ public class GameCanvas extends JPanel implements Runnable
             if (game.debug) {
                 g2d.drawString(String.format("FPS = %.1f", rate), 200, 25);
                 g2d.drawString(String.format("UPS = %.1f", game.rate), 200, 50);
-                //game.player.box.drawBox(g2d);
+                game.player.box.drawBox(g2d);
+                for(Sprite enemy : game.enemies) {
+                    enemy.box.drawBox(g2d);
+                }
+                for(Sprite platform : game.platforms) {
+                    platform.box.drawBox(g2d);
+                }
             }
 
             graphics.drawImage(image, 0, 0, null);
