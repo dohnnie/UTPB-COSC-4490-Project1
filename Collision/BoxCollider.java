@@ -56,10 +56,10 @@ public class BoxCollider {
     }
 
     public static boolean checkCollision(Sprite s1, Sprite s2) {
-        boolean noXOverlap = s1.box.getRight() <= s2.box.getLeft() || s1.box.getRight() >= s2.box.getRight();
+        boolean noXOverlap = s1.box.getRight() <= s2.box.getLeft() || s1.box.getLeft() >= s2.box.getRight();
         boolean noYOverlap = s1.box.getBottom() <= s2.box.getTop() || s1.box.getTop() >= s2.box.getBottom();
 
-        if(noXOverlap && noYOverlap) {
+        if(noXOverlap || noYOverlap) {
             return false;
         }
         else {
@@ -81,9 +81,9 @@ public class BoxCollider {
     public static void resolvePlatformCollisions(Sprite s, ArrayList<Sprite> walls) {
         s.yVel += s.GRAVITY;
 
+        //Vertical collision checks
         s.box.centerY += s.yVel;
         ArrayList<Sprite> colList = BoxCollider.checkCollisionList(s, walls);
-        //System.out.println("Vertical Collision List: " + colList.size());
         if(colList.size() > 0) {
             Sprite collided = colList.get(0);
             if(s.yVel > 0) {
@@ -94,9 +94,9 @@ public class BoxCollider {
             s.yVel = 0;
         }
 
+        //Horizontal collision check
         s.box.centerX += s.xVel;
         colList = BoxCollider.checkCollisionList(s, walls);
-        //System.out.println("Horizontal Collision List: " + colList.size());
         if(colList.size() > 0) {
             Sprite collided = colList.get(0);
             if(s.xVel > 0) {

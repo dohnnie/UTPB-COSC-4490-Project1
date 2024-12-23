@@ -50,7 +50,7 @@ public class Sprite {
     }
 
     public void update() {
-        box.centerX += yVel;
-        box.centerY += xVel;
+        box.centerX += xVel;
+        box.centerY += yVel;
     }
 }

@@ -76,6 +76,8 @@ public class Game implements Runnable
             //Debug print statements
             System.out.println("Platform Amount: " + platforms.size());
             System.out.println("Enemies Amount: " + enemies.size());
+            System.out.println("Player Center X: " + player.box.centerX + ", Player Center Y: " + player.box.centerY);
+            System.out.println("Player Top: " + player.box.getTop() + ", Player Bottom: " + player.box.getBottom() + ", Player Left: " + player.box.getLeft() + ", Player Right: " + player.box.getRight());
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(0);
@@ -205,6 +207,9 @@ public class Game implements Runnable
 
                 //Checks for collisions and resolves them
                 BoxCollider.resolvePlatformCollisions(player, platforms);
+                for(Sprite enemy : enemies) {
+                    BoxCollider.resolvePlatformCollisions(enemy, platforms);
+                }
             }
 
             long sleep = (long) waitTime - (System.nanoTime() - startTime) / 1000000;
