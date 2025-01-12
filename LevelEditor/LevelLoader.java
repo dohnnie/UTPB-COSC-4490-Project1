@@ -72,7 +72,7 @@ public class LevelLoader {
                         platforms.add(platform);
                     }
                     case Player -> {
-                        Sprite temp = new Sprite("Figure.png", new Point(xPos, yPos));
+                        Sprite temp = new Sprite("Mario.png", new Point(xPos, yPos)) ;
                         player[0] = (temp);
                     }
                     case BasicEnemy -> {

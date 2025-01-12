@@ -9,13 +9,13 @@ import javax.imageio.ImageIO;
 
 
 public class Sprite {
-    public final float GRAVITY = 0.6f
-    ;
+    public final float GRAVITY = 0.6f;
+
     BufferedImage playerImage;
     public BoxCollider box;
     public float xVel, yVel;
 
-    Sprite(String imageFile, Point origin, int w, int h) throws IOException {
+    public Sprite(String imageFile, Point origin, int w, int h) throws IOException {
         box = new BoxCollider(origin.x, origin.y, w, h);
 
         playerImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
@@ -24,8 +24,8 @@ public class Sprite {
         Image tempImage = rawImage.getScaledInstance(box.width, box.height, Image.SCALE_SMOOTH);
         x.drawImage(tempImage, 0, 0, null);
         x.dispose();
-        xVel = 0;
-        yVel = 0;
+        xVel = 0.0f;
+        yVel = 0.0f;
     }
 
     public Sprite(String imageFile, Point origin) throws IOException{
@@ -42,6 +42,12 @@ public class Sprite {
 
     public void moveVertical() {
         box.centerY += yVel;
+    }
+
+    //Debug method
+    public void dMoveLeft() {
+        xVel -= 0.1;
+        moveHorizontal();
     }
 
     public void reset() {

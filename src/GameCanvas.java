@@ -18,22 +18,40 @@ public class GameCanvas extends JPanel implements Runnable
 
     public int cursor = 0;
 
-    //This will eventually change based on file size
-    public int mapWidth, mapHeight;
-    
+    public Point viewOrigin;
+    public static float leftMargin = 60;
+    public static float rightMargin = 400;
+    public static float verticalMargin = 40;
+
     int width, height;
 
     public GameCanvas(Game game, Graphics g, Toolkit tk)
     {
         this.game = game;
         graphics = g;
+        viewOrigin = new Point(0, 0);
     }
 
-    public void setup() {
-        mapWidth = (game.tk.getScreenSize().width / game.SPRITE_SIZE) + 1;
-        mapHeight = (game.tk.getScreenSize().height / game.SPRITE_SIZE) + 1;
+    public void scroll() {
+        float rightBoundary = viewOrigin.x + width - rightMargin;
+        if(game.player.box.getRight() > rightBoundary) {
+            viewOrigin.x += game.player.box.getRight() - rightBoundary;
+        }
 
-        System.out.println("Map Dimensions: " + mapHeight + " x " + mapWidth);
+        float leftBoundary = viewOrigin.x + leftMargin;
+        if(game.player.box.getLeft() < leftBoundary) {
+            viewOrigin.x -= leftBoundary - game.player.box.getLeft();
+        }
+
+        float bottomBoundary = viewOrigin.y + height - verticalMargin;
+        if(game.player.box.getBottom() > bottomBoundary) {
+            viewOrigin.y += game.player.box.getBottom() - bottomBoundary;
+        }
+
+        float topBoundary = viewOrigin.y + verticalMargin;
+        if(game.player.box.getTop() < topBoundary){
+            viewOrigin.y -= topBoundary - game.player.box.getTop();
+        }
     }
 
     @Override
@@ -50,6 +68,9 @@ public class GameCanvas extends JPanel implements Runnable
 
             g2d.setColor(Color.CYAN);
             g2d.fillRect(0, 0, width, height);
+            
+            scroll();
+            g2d.translate(-viewOrigin.x, -viewOrigin.y);
 
             game.player.draw(g2d);
             for(Sprite platform : game.platforms) {
@@ -64,8 +85,8 @@ public class GameCanvas extends JPanel implements Runnable
                 //g2d.drawString(String.format("Score: %d", game.score), 25, 25);
                 //g2d.drawString(String.format("High Score: %d", game.highScore), 25, 50);
             } else {
-                g2d.drawString(String.format("%s Reset Game", cursor == 0 ? ">" : " "), 25, 25);
-                g2d.drawString(String.format("%s Exit Game", cursor == 1 ? ">" : " "), 25, 50);
+                g2d.drawString(String.format("%s Reset Game", cursor == 0 ? ">" : " "), viewOrigin.x + 25, viewOrigin.y + 25);
+                g2d.drawString(String.format("%s Exit Game", cursor == 1 ? ">" : " "), viewOrigin.x + 25, viewOrigin.y + 50);
                 String vol = "";
                 for (int i = 0; i < 11; i++)
                 {
@@ -77,11 +98,11 @@ public class GameCanvas extends JPanel implements Runnable
                     }
                 }
                 g2d.drawString(String.format("%s Volume %s", cursor == 2 ? ">" : " ", vol), 25, 75);
-                g2d.drawString(String.format("%s Debug Mode %s", cursor == 6 ? ">" : " ", game.debug ? "(ON)" : "(OFF)"), 25, 100);
+                g2d.drawString(String.format("%s Debug Mode %s", cursor == 6 ? ">" : " ", game.debug ? "(ON)" : "(OFF)"), viewOrigin.x + 25, viewOrigin.y + 100);
             }
             if (game.debug) {
-                g2d.drawString(String.format("FPS = %.1f", rate), 200, 25);
-                g2d.drawString(String.format("UPS = %.1f", game.rate), 200, 50);
+                g2d.drawString(String.format("FPS = %.1f", rate), viewOrigin.x + 200, viewOrigin.y + 25);
+                g2d.drawString(String.format("UPS = %.1f", game.rate), viewOrigin.x + 200, viewOrigin.y + 50);
                 game.player.box.drawBox(g2d);
                 for(Sprite enemy : game.enemies) {
                     enemy.box.drawBox(g2d);

@@ -26,6 +26,7 @@ public class Game implements Runnable
     private boolean goLeft = false;
     public final double MAX_X_SPEED = 5;
     public final double ACCELERATION = 0.1;
+    public final float JUMP_SPEED = 14f;
 
     //Related to fps
     private final double rateTarget = 100.0;
@@ -59,7 +60,6 @@ public class Game implements Runnable
 
         //From this point on, the program can draw to the JFrame
         canvas = new GameCanvas(this, frame.getGraphics(), tk);
-        canvas.setup(); //starts initial settings for canvas
         frame.add(canvas);
 
         //Starts loading file data into necessary arrays
@@ -102,7 +102,9 @@ public class Game implements Runnable
                 switch(e.getKeyCode()) {
                     case KeyEvent.VK_SPACE -> {
                         if(running) {
-
+                            if(BoxCollider.isOnPlatforms(player, platforms)) {
+                                player.yVel -= JUMP_SPEED;
+                            }
                         }
                     }
                     case KeyEvent.VK_ESCAPE -> {
@@ -204,6 +206,8 @@ public class Game implements Runnable
                     player.xVel += 0.1f;
                     player.moveHorizontal();
                 }
+
+                //player.dMoveLeft();
 
                 //Checks for collisions and resolves them
                 BoxCollider.resolvePlatformCollisions(player, platforms);
