@@ -36,7 +36,7 @@ public class Game implements Runnable
     //Array objects needed to load level data
     int[][] tileGrid;
     public ArrayList<Sprite> platforms;
-    public ArrayList<Sprite> enemies;
+    public ArrayList<Enemy> enemies;
 
     //Misc.
     public boolean debug = false;
@@ -212,6 +212,7 @@ public class Game implements Runnable
                 //Checks for collisions and resolves them
                 BoxCollider.resolvePlatformCollisions(player, platforms);
                 for(Sprite enemy : enemies) {
+                    enemy.update();
                     BoxCollider.resolvePlatformCollisions(enemy, platforms);
                 }
             }

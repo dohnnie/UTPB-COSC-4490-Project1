@@ -1,6 +1,7 @@
 package LevelEditor;
 
 import Enums.Elements;
+import GameObjects.Enemy;
 import GameObjects.Sprite;
 
 import java.io.*;
@@ -59,7 +60,7 @@ public class LevelLoader {
         return finalData;
     }
 
-    public static void createLevel(int[][] tileGrid, int spriteSize, ArrayList<Sprite> platforms, ArrayList<Sprite> enemies, Sprite[] player)
+    public static void createLevel(int[][] tileGrid, int spriteSize, ArrayList<Sprite> platforms, ArrayList<Enemy> enemies, Sprite[] player)
     throws IOException{
         for(int row = 0; row < tileGrid.length; row++) {
             for(int col = 0; col < tileGrid[row].length; col++) {
@@ -76,7 +77,9 @@ public class LevelLoader {
                         player[0] = (temp);
                     }
                     case BasicEnemy -> {
-                        Sprite enemy = new Sprite("Goomba.png",  new Point(xPos, yPos));
+                        float bLeft = col * 100;
+                        float bRight = bLeft + 4 * 100;
+                        Enemy enemy = new Enemy("Goomba.png",  new Point(xPos, yPos), bLeft, bRight);
                         enemies.add(enemy);
                     }
                     case None -> {

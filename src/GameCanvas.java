@@ -97,7 +97,7 @@ public class GameCanvas extends JPanel implements Runnable
                         vol += "-";
                     }
                 }
-                g2d.drawString(String.format("%s Volume %s", cursor == 2 ? ">" : " ", vol), 25, 75);
+                g2d.drawString(String.format("%s Volume %s", cursor == 2 ? ">" : " ", vol), viewOrigin.x + 25, viewOrigin.y + 75);
                 g2d.drawString(String.format("%s Debug Mode %s", cursor == 6 ? ">" : " ", game.debug ? "(ON)" : "(OFF)"), viewOrigin.x + 25, viewOrigin.y + 100);
             }
             if (game.debug) {
