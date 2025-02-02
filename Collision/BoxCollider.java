@@ -14,8 +14,8 @@ public class BoxCollider {
         this.width = width;
         this.height = height;
 
-        centerX = x + (width / 2);
-        centerY = y + (height / 2);
+        centerX = x + (float)(width / 2);
+        centerY = y + (float)(height / 2);
     }
 
     public void drawBox(Graphics g) {
@@ -24,47 +24,43 @@ public class BoxCollider {
     }
 
     public float getLeft() {
-        return centerX - (width / 2);
+        return centerX - (float)(width / 2);
     }
 
     public void setLeft(float newLeft) {
-        centerX = newLeft + (width / 2);
+        centerX = newLeft + (float)(width / 2);
     }
 
     public float getRight() {
-        return centerX + (width / 2);
+        return centerX + (float)(width / 2);
     }
 
     public void setRight(float newRight) {
-        centerX = newRight - (width / 2);
+        centerX = newRight - (float)(width / 2);
     }
 
     public float getTop() {
-        return centerY - (height / 2);
+        return centerY - (float)(height / 2);
     }
 
     public void setTop(float newTop) {
-        centerY = newTop + (height / 2);
+        centerY = newTop + (float)(height / 2);
     }
 
     public float getBottom() {
-        return centerY + (height / 2);
+        return centerY + (float)(height / 2);
     }
 
     public void setBottom(float newBottom) {
-        centerY = newBottom - (height / 2);
+        centerY = newBottom - (float)(height / 2);
     }
 
     public static boolean checkCollision(Sprite s1, Sprite s2) {
         boolean noXOverlap = s1.box.getRight() <= s2.box.getLeft() || s1.box.getLeft() >= s2.box.getRight();
         boolean noYOverlap = s1.box.getBottom() <= s2.box.getTop() || s1.box.getTop() >= s2.box.getBottom();
 
-        if(noXOverlap || noYOverlap) {
-            return false;
-        }
-        else {
-            return true;
-        }
+
+        return !(noXOverlap || noYOverlap);
     }
 
     public static ArrayList<Sprite> checkCollisionList(Sprite sprite, ArrayList<Sprite> list) {
@@ -82,11 +78,8 @@ public class BoxCollider {
         s.box.centerY += 5;
         ArrayList<Sprite> colList = checkCollisionList(s, walls);
         s.box.centerY -= 5;
-        if(colList.size() > 0) {
-            return true;
-        }
 
-        return false;
+        return !colList.isEmpty();
     }
 
     /*
@@ -105,11 +98,11 @@ public class BoxCollider {
         //Vertical collision checks
         s.box.centerY += s.yVel;
         ArrayList<Sprite> colList = BoxCollider.checkCollisionList(s, walls);
-        if(colList.size() > 0) {
-            Sprite collided = colList.get(0);
+        if(!colList.isEmpty()) {
+            Sprite collided = colList.getFirst();
             if(s.yVel > 0) {
                 s.box.setBottom(collided.box.getTop());
-            } else if(s.yVel < 0){
+            } else if(s.yVel < 0) {
                 s.box.setTop(collided.box.getBottom());
             }
             s.yVel = 0;
@@ -119,8 +112,8 @@ public class BoxCollider {
         //Horizontal collision check
         s.box.centerX += s.xVel;
         colList = BoxCollider.checkCollisionList(s, walls);
-        if(colList.size() > 0) {
-            Sprite collided = colList.get(0);
+        if(!colList.isEmpty()) {
+            Sprite collided = colList.getFirst();
             if(s.xVel > 0) {
                 s.box.setRight(collided.box.getLeft());
             } else if(s.xVel < 0){

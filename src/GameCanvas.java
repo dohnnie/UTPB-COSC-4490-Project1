@@ -9,11 +9,11 @@ import java.awt.image.BufferedImage;
 public class GameCanvas extends JPanel implements Runnable
 {
 
-    private Game game;
-    private Graphics graphics;
+    private final Game game;
+    private final Graphics graphics;
 
     private final double rateTarget = 60.0;
-    private double waitTime = 1000.0 / rateTarget;
+    private final double waitTime = 1000.0 / rateTarget;
     private double rate = 1000.0 / waitTime;
 
     public int cursor = 0;
@@ -25,7 +25,7 @@ public class GameCanvas extends JPanel implements Runnable
 
     int width, height;
 
-    public GameCanvas(Game game, Graphics g, Toolkit tk)
+    public GameCanvas(Game game, Graphics g)
     {
         this.game = game;
         graphics = g;
@@ -103,6 +103,7 @@ public class GameCanvas extends JPanel implements Runnable
             if (game.debug) {
                 g2d.drawString(String.format("FPS = %.1f", rate), viewOrigin.x + 200, viewOrigin.y + 25);
                 g2d.drawString(String.format("UPS = %.1f", game.rate), viewOrigin.x + 200, viewOrigin.y + 50);
+                g2d.drawString("Lives: " + game.player.lives, viewOrigin.x + 200, viewOrigin.y + 75);
                 game.player.box.drawBox(g2d);
                 for(Sprite enemy : game.enemies) {
                     enemy.box.drawBox(g2d);

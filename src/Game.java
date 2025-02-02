@@ -21,7 +21,7 @@ public class Game implements Runnable
     public final int SPRITE_SIZE = 100;
 
     //Player movement clamps and flags
-    public Sprite player;
+    public Player player;
     private boolean goRight = false;
     private boolean goLeft = false;
     public final double MAX_X_SPEED = 5;
@@ -59,18 +59,21 @@ public class Game implements Runnable
         frame.requestFocus();
 
         //From this point on, the program can draw to the JFrame
-        canvas = new GameCanvas(this, frame.getGraphics(), tk);
+        canvas = new GameCanvas(this, frame.getGraphics());
         frame.add(canvas);
 
         //Starts loading file data into necessary arrays
         try {
             platforms = new ArrayList<>();
             enemies = new ArrayList<>();
-            tileGrid = LevelLoader.readCSV(new File(".\\LevelEditor\\test_level.csv"));
-            //I have to do a funky workaround for pass by reference when loading player data
-            Sprite[] playerRef = new Sprite[1];
 
-            LevelLoader.createLevel(tileGrid, SPRITE_SIZE, platforms, enemies, playerRef);
+            //I have to do a funky workaround for pass by reference when loading player data
+            Player[] playerRef = new Player[1];
+            LevelLoader.readCSV(new File(".\\LevelEditor\\test_level.csv"), SPRITE_SIZE, platforms, enemies, playerRef);
+            //if(tileGrid == null) throw new RuntimeException("TileGrid is null");
+
+
+            //LevelLoader.createLevel(tileGrid, SPRITE_SIZE, platforms, enemies, playerRef);
             player = playerRef[0];
 
             //Debug print statements

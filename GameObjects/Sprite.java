@@ -46,7 +46,7 @@ public class Sprite {
 
     //Debug method
     public void dMoveLeft() {
-        xVel -= 0.1;
+        xVel -= 0.1f;
         moveHorizontal();
     }
 
