@@ -11,9 +11,9 @@ public enum Elements {
     Player(2),
     BasicEnemy(3);
 
-    public int id;
+    public final int id;
 
-    private Elements(int id) {
+    Elements(int id) {
         this.id = id;
     }
 

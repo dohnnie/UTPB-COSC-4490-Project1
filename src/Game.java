@@ -34,13 +34,13 @@ public class Game implements Runnable
     public double rate = 1000 / waitTime;
 
     //Array objects needed to load level data
-    int[][] tileGrid;
     public ArrayList<Sprite> platforms;
     public ArrayList<Enemy> enemies;
 
     //Misc.
     public boolean debug = false;
     public boolean running = true;
+    public boolean isGameOver = false;
     public double volume = 0.3;
 
     public Game()
@@ -70,8 +70,6 @@ public class Game implements Runnable
             //I have to do a funky workaround for pass by reference when loading player data
             Player[] playerRef = new Player[1];
             LevelLoader.readCSV(new File(".\\LevelEditor\\test_level.csv"), SPRITE_SIZE, platforms, enemies, playerRef);
-            //if(tileGrid == null) throw new RuntimeException("TileGrid is null");
-
 
             //LevelLoader.createLevel(tileGrid, SPRITE_SIZE, platforms, enemies, playerRef);
             player = playerRef[0];
@@ -82,7 +80,7 @@ public class Game implements Runnable
             System.out.println("Player Center X: " + player.box.centerX + ", Player Center Y: " + player.box.centerY);
             System.out.println("Player Top: " + player.box.getTop() + ", Player Bottom: " + player.box.getBottom() + ", Player Left: " + player.box.getLeft() + ", Player Right: " + player.box.getRight());
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Error reading file");
             System.exit(0);
         }
 
@@ -227,7 +225,7 @@ public class Game implements Runnable
             {
                 Thread.sleep(Math.max(sleep, 0));
             } catch (InterruptedException ex) {
-                ex.printStackTrace();
+                System.err.println(ex.getMessage());
                 System.exit(0);
             }
         }

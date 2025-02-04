@@ -56,8 +56,7 @@ public class GameCanvas extends JPanel implements Runnable
 
     @Override
     public void run() {
-        while(true)
-        {
+        while(true) {
             long startTime = System.nanoTime();
 
             width = game.tk.getScreenSize().width;
@@ -68,62 +67,61 @@ public class GameCanvas extends JPanel implements Runnable
 
             g2d.setColor(Color.CYAN);
             g2d.fillRect(0, 0, width, height);
-            
+
             scroll();
             g2d.translate(-viewOrigin.x, -viewOrigin.y);
 
             game.player.draw(g2d);
-            for(Sprite platform : game.platforms) {
+            for (Sprite platform : game.platforms) {
                 platform.draw(g2d);
             }
-            for(Sprite enemy : game.enemies) {
+            for (Sprite enemy : game.enemies) {
                 enemy.draw(g2d);
             }
 
             g2d.setColor(Color.BLACK);
-            if (game.running) {
-                //g2d.drawString(String.format("Score: %d", game.score), 25, 25);
-                //g2d.drawString(String.format("High Score: %d", game.highScore), 25, 50);
-            } else {
-                g2d.drawString(String.format("%s Reset Game", cursor == 0 ? ">" : " "), viewOrigin.x + 25, viewOrigin.y + 25);
-                g2d.drawString(String.format("%s Exit Game", cursor == 1 ? ">" : " "), viewOrigin.x + 25, viewOrigin.y + 50);
-                String vol = "";
-                for (int i = 0; i < 11; i++)
-                {
-                    if ((int) (game.volume * 10) == i)
-                    {
-                        vol += "|";
-                    } else {
-                        vol += "-";
+            if (!game.isGameOver) {
+                if (game.running) {
+                    //g2d.drawString(String.format("Score: %d", game.score), 25, 25);
+                    //g2d.drawString(String.format("High Score: %d", game.highScore), 25, 50);
+                } else {
+                    g2d.drawString(String.format("%s Reset Game", cursor == 0 ? ">" : " "), viewOrigin.x + 25, viewOrigin.y + 25);
+                    g2d.drawString(String.format("%s Exit Game", cursor == 1 ? ">" : " "), viewOrigin.x + 25, viewOrigin.y + 50);
+                    String vol = "";
+                    for (int i = 0; i < 11; i++) {
+                        if ((int) (game.volume * 10) == i) {
+                            vol += "|";
+                        } else {
+                            vol += "-";
+                        }
+                    }
+                    g2d.drawString(String.format("%s Volume %s", cursor == 2 ? ">" : " ", vol), viewOrigin.x + 25, viewOrigin.y + 75);
+                    g2d.drawString(String.format("%s Debug Mode %s", cursor == 6 ? ">" : " ", game.debug ? "(ON)" : "(OFF)"), viewOrigin.x + 25, viewOrigin.y + 100);
+                }
+                if (game.debug) {
+                    g2d.drawString(String.format("FPS = %.1f", rate), viewOrigin.x + 200, viewOrigin.y + 25);
+                    g2d.drawString(String.format("UPS = %.1f", game.rate), viewOrigin.x + 200, viewOrigin.y + 50);
+                    g2d.drawString("Lives: " + game.player.hitpoints, viewOrigin.x + 200, viewOrigin.y + 75);
+                    game.player.box.drawBox(g2d);
+                    for (Sprite enemy : game.enemies) {
+                        enemy.box.drawBox(g2d);
+                    }
+                    for (Sprite platform : game.platforms) {
+                        platform.box.drawBox(g2d);
                     }
                 }
-                g2d.drawString(String.format("%s Volume %s", cursor == 2 ? ">" : " ", vol), viewOrigin.x + 25, viewOrigin.y + 75);
-                g2d.drawString(String.format("%s Debug Mode %s", cursor == 6 ? ">" : " ", game.debug ? "(ON)" : "(OFF)"), viewOrigin.x + 25, viewOrigin.y + 100);
-            }
-            if (game.debug) {
-                g2d.drawString(String.format("FPS = %.1f", rate), viewOrigin.x + 200, viewOrigin.y + 25);
-                g2d.drawString(String.format("UPS = %.1f", game.rate), viewOrigin.x + 200, viewOrigin.y + 50);
-                g2d.drawString("Lives: " + game.player.lives, viewOrigin.x + 200, viewOrigin.y + 75);
-                game.player.box.drawBox(g2d);
-                for(Sprite enemy : game.enemies) {
-                    enemy.box.drawBox(g2d);
+
+                graphics.drawImage(image, 0, 0, null);
+
+                long sleep = (long) waitTime - (System.nanoTime() - startTime) / 1000000;
+                rate = 1000.0 / Math.max(waitTime - sleep, waitTime);
+
+                try {
+                    Thread.sleep(Math.max(sleep, 0));
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                    System.exit(0);
                 }
-                for(Sprite platform : game.platforms) {
-                    platform.box.drawBox(g2d);
-                }
-            }
-
-            graphics.drawImage(image, 0, 0, null);
-
-            long sleep = (long) waitTime - (System.nanoTime() - startTime) / 1000000;
-            rate = 1000.0 / Math.max(waitTime - sleep, waitTime);
-
-            try
-            {
-                Thread.sleep(Math.max(sleep, 0));
-            } catch (InterruptedException ex) {
-                ex.printStackTrace();
-                System.exit(0);
             }
         }
     }

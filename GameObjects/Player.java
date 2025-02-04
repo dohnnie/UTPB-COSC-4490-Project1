@@ -6,13 +6,13 @@ import java.awt.*;
 import java.io.IOException;
 
 public class Player extends Sprite{
-    public int lives;
+    public int hitpoints;
     private Directions direction;
 
     public Player(String imageFile, Point origin) throws IOException {
         super(imageFile, origin);
 
-        lives = 3;
+        hitpoints = 3;
         direction = Directions.RIGHT;
     }
 

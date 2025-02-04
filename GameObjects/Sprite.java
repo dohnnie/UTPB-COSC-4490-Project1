@@ -40,10 +40,6 @@ public class Sprite {
         box.centerX += xVel;
     }
 
-    public void moveVertical() {
-        box.centerY += yVel;
-    }
-
     //Debug method
     public void dMoveLeft() {
         xVel -= 0.1f;
